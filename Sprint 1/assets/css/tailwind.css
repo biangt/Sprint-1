@@ -87,7 +87,8 @@
     @apply block bg-white rounded-md shadow-card overflow-hidden;
   }
   .product-card img {
-    @apply w-full block;
+    @apply w-full object-cover block;
+    aspect-ratio: 4 / 5; /* ancho:alto = 4:5 -> un poco más alto que ancho */
   }
   .product-card__body {
     @apply p-4;
