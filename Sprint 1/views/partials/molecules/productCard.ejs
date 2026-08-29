@@ -2,7 +2,7 @@
 <%# href construye la ruta usando el id unico del objeto producto. %>
 <%# El id del producto se lee de producto.id y se inserta escapado en el HTML. %>
 <a href="/products/<%= producto.id %>" class="product-card">
-  <img src="<%= producto.imagen %>" alt="<%= producto.nombre %>" />
+  <img src="<%= (producto.imagen && producto.imagen.trim()) ? producto.imagen : '/assets/img/placeholder-producto.png' %>" alt="<%= producto.nombre %>" />
   <div class="product-card__body">
     <h3 class="product-card__title"><%= producto.nombre %></h3>
   <%# Se incluye el atomo price y se le pasa el precio expresado en puntos. producto.precioEnPuntos obtiene esa propiedad del objeto producto. %>

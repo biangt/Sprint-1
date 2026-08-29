@@ -2,12 +2,11 @@
 <%# <header> identifica semanticamente la parte superior de una pagina. %>
 <header class="site-header">
   <%- include('../atoms/logo') %>
-  <%- include('../molecules/searchBar') %>
-  <%# <nav> agrupa los enlaces principales de navegacion. %>
-  <nav class="site-nav">
-    <a href="/">Inicio</a>
-    <a href="/cart">Carrito</a>
-    <a href="/login">Iniciar sesión</a>
-    <a href="/register">Registrarse</a>
-  </nav>
+  <div class="site-header__search">
+    <%- include('../molecules/searchBar') %>
+  </div>
+  <div class="site-header__actions">
+    <%- include('../molecules/cartButton', { cantidad: typeof cantidadCarrito !== 'undefined' ? cantidadCarrito : 0 }) %>
+    <%- include('../molecules/userMenu', { nombre: typeof usuarioNombre !== 'undefined' ? usuarioNombre : 'Invitado' }) %>
+  </div>
 </header>

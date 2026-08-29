@@ -11,10 +11,25 @@
 <body>
   <%- include('../partials/organisms/header') %>
 
+  <%- include('../partials/organisms/categoryStrip', { categorias: categorias }) %>
+
+  <%- include('../partials/organisms/promoBanner') %>
+
+  <%
+    /* Mientras no haya un criterio real (recomendaciones, ventas, etc.),
+       partimos el mismo arreglo "productos" en dos grupos para las dos
+       secciones del home: los primeros 4 para "Te puede interesar"
+       y el resto para "Los más pedidos". */
+    const destacados = productos.slice(0, 4);
+    const masPedidos = productos.slice(4);
+  %>
+
   <main>
-    <h1>Productos destacados</h1>
-    <%- include('../partials/organisms/productGrid', { productos: productos }) %>
+    <%- include('../partials/organisms/productGrid', { productos: destacados, titulo: 'Te puede interesar' }) %>
+    <%- include('../partials/organisms/productGrid', { productos: masPedidos, titulo: 'Los más pedidos' }) %>
   </main>
+
+  <%- include('../partials/organisms/categoryStrip', { categorias: categorias }) %>
 
   <%- include('../partials/organisms/footer') %>
 </body>

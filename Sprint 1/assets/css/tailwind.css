@@ -280,3 +280,120 @@
     @apply px-4 md:px-8 pb-8;
   }
 }
+
+
+
+
+  /* ============================================================
+     Bloque agregado para el rediseño del Home según Figma.
+     Todo lo de acá abajo son clases NUEVAS: no se modificó ni
+     se borró ninguna regla existente de este archivo.
+     ============================================================ */
+
+  /* Avatar (atoms/avatar.ejs) */
+  .avatar {
+    @apply flex h-9 w-9 items-center justify-center rounded-full
+           bg-dark text-white text-sm font-bold select-none;
+  }
+
+  /* Botón de carrito con badge (molecules/cartButton.ejs) */
+  .cart-button {
+    @apply relative inline-flex;
+  }
+  .cart-button__badge {
+    @apply absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center
+           rounded-full bg-red-600 text-white text-[11px] font-bold leading-none;
+  }
+
+  /* Disparador del menú de usuario (molecules/userMenu.ejs) */
+  .user-menu-trigger {
+    @apply flex items-center gap-2 hover:opacity-80 transition-opacity;
+  }
+  .user-menu-trigger__name {
+    @apply text-sm font-medium text-black;
+  }
+
+  /* Contenedor del buscador dentro del header, SOLO para el Home.
+     Envuelve a molecules/searchBar.ejs sin tocar la clase .search-bar,
+     así el buscador en otras pantallas no cambia. */
+  .site-header__search {
+    @apply flex-1 max-w-2xl;
+  }
+
+  /* Acciones de la derecha del header (organisms/header.ejs) */
+  .site-header__actions {
+    @apply flex items-center gap-4 shrink-0;
+  }
+
+  /* Franja de categorías (organisms/categoryStrip.ejs) */
+  .category-strip {
+    @apply mx-8 my-6 flex flex-wrap items-center justify-around gap-4
+           rounded-md bg-dark px-6 py-6;
+  }
+  .category-strip__item {
+    @apply flex flex-col items-center gap-2 text-white text-xs text-center
+           hover:opacity-80 transition-opacity;
+  }
+  .category-strip__icon {
+    @apply flex h-7 w-7 items-center justify-center;
+  }
+  .category-strip__icon svg {
+    @apply h-6 w-6;
+  }
+
+  /* Contenido interno del hero (organisms/promoBanner.ejs).
+     .hero y .hero__banner YA EXISTÍAN reservados en este archivo
+     (no se tocaron); esto solo agrega lo que faltaba adentro. */
+  .hero__grid {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-4;
+  }
+  .hero__banner {
+    @apply relative;
+  }
+  .hero__banner-img {
+    @apply block h-56 w-full object-cover;
+  }
+  .hero__banner-caption {
+    @apply absolute inset-x-0 bottom-0 bg-dark/80 p-4 text-white;
+  }
+  .hero__banner-title {
+    @apply mb-1 text-base font-bold;
+  }
+  .hero__banner-subtitle {
+    @apply text-sm;
+  }
+
+  /* Título de sección arriba de la grilla de productos
+     (organisms/productGrid.ejs). No se tocó .product-grid. */
+  .product-section {
+    @apply py-4;
+  }
+  .product-section__title {
+    @apply px-8 mb-4 text-lg font-semibold;
+  }
+
+  /* Footer del Home (organisms/footer.ejs). .site-footer NO se tocó:
+     esta es una clase extra que solo se agrega en el footer del Home
+     para ponerlo en fila. En otras pantallas donde footer.ejs se use
+     sin esta clase, se sigue viendo como antes. */
+  .site-footer--home {
+    @apply flex flex-wrap items-center justify-between gap-4;
+  }
+  .site-footer__social {
+    @apply flex items-center gap-4 list-none m-0 p-0;
+  }
+  .site-footer__social svg {
+    @apply h-5 w-5;
+  }
+  .site-footer__social a {
+    @apply block hover:opacity-80 transition-opacity;
+  }
+  .site-footer__copyright {
+    @apply flex-1 text-center text-sm;
+  }
+  .site-footer__stores {
+    @apply flex items-center gap-4 text-sm;
+  }
+  .site-footer__store-link {
+    @apply hover:opacity-80 transition-opacity;
+  }
