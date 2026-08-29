@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>ZEUS - Registro</title>
+  <title>MiEcommerce - Registro</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet" />
@@ -11,16 +11,20 @@
 <body>
   <%- include('../partials/organisms/header') %>
 
-  <main>
-    <h1>Create account</h1>
-    <form action="/register" method="POST" class="register-form">
-      <%- include('../partials/molecules/formGroup', { type: 'text', name: 'nombre', label: 'Name', required: true }) %>
+  <%# Franja teal de fondo (auth-hero), igual que en el prototipo de Figma. %>
+  <%# La tarjeta de registro (.register-form) se superpone al límite entre %>
+  <%# esta franja y el fondo gris gracias al margen negativo definido en su CSS. %>
+  <section class="auth-hero">
+    <form action="/register" method="POST" class="auth-form">
+      <h1>¡Regístrate!</h1>
+      <%- include('../partials/molecules/formGroup', { type: 'text', name: 'nombre', label: 'Nombre', required: true }) %>
       <%- include('../partials/molecules/formGroup', { type: 'email', name: 'email', label: 'Email', required: true }) %>
-      <%- include('../partials/molecules/formGroup', { type: 'password', name: 'password', label: 'Password', required: true }) %>
-      <%- include('../partials/atoms/button', { text: 'Register', type: 'submit', variant: 'primary' }) %>
+      <%- include('../partials/molecules/formGroup', { type: 'password', name: 'password', label: 'Contraseña', required: true }) %>
+      <%- include('../partials/molecules/formGroup', { type: 'password', name: 'password2', label: 'Repetí tu contraseña', required: true }) %>
+      <%- include('../partials/atoms/button', { text: 'Registrarse', type: 'submit', variant: 'primary' }) %>
+      <a href="/login">¿Ya tenés cuenta? Iniciá sesión</a>
     </form>
-    <a href="/login">¿Ya tenés cuenta? Iniciá sesión</a>
-  </main>
+  </section>
 
   <%- include('../partials/organisms/footer') %>
 </body>
