@@ -1,0 +1,16 @@
+<%# Este atomo es exclusivo para botones que muestran un icono visual, %>
+<%# no texto visible. Mantiene la estructura atomica separada del boton de texto. %>
+<%# La imagen se inyecta desde la molecula que lo llama, para que cada boton %>
+<%# decida su contenido grafico sin dejar una lupa fija como default global. %>
+<button
+  type="<%= typeof type !== 'undefined' ? type : 'button' %>"
+  class="icon-btn <%= (typeof variant !== 'undefined' && variant === 'secondary') ? 'icon-btn--secondary' : 'icon-btn--primary' %>"
+  <%= typeof ariaLabel !== 'undefined' && ariaLabel ? 'aria-label="' + ariaLabel + '"' : '' %>
+  <%= typeof title !== 'undefined' && title ? 'title="' + title + '"' : '' %>
+>
+  <%# El icono se recibe como HTML desde la molecula, de esta forma la lupa,ñ %>
+  <%# no queda "hardcodeada" dentro del atomo ni afecta a otros botones. %>
+  <% if (typeof icon !== 'undefined' && icon) { %>
+    <span class="icon-btn__icon"><%- icon %></span>
+  <% } %>
+</button>

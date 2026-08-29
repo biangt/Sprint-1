@@ -12,5 +12,85 @@
     "imagen": "/assets/img/mochila.jpg",
     "precioEnPuntos": 800,
     "categoriaId": 7
+  },
+  {
+    "id": 3,
+    "nombre": "Zapatillas Runner",
+    "descripcion": "Livianas y cómodas",
+    "imagen": "/assets/img/zapatillas-runner.jpg",
+    "precioEnPuntos": 8999,
+    "categoriaId": 4
+  },
+  {
+    "id": 4,
+    "nombre": "Mochila deportiva",
+    "descripcion": "Amplia y resistente",
+    "imagen": "/assets/img/mochila-deportiva.jpg",
+    "precioEnPuntos": 5499,
+    "categoriaId": 7
+  },
+  {
+    "id": 5,
+    "nombre": "Remera deportiva",
+    "descripcion": "Tela ligera",
+    "imagen": "/assets/img/remera-deportiva.jpg",
+    "precioEnPuntos": 3299,
+    "categoriaId": 1
+  },
+  {
+    "id": 6,
+    "nombre": "Short Running",
+    "descripcion": "Flexible y fresco",
+    "imagen": "/assets/img/short-running.jpg",
+    "precioEnPuntos": 2799,
+    "categoriaId": 2
+  },
+  {
+    "id": 7,
+    "nombre": "Botella deportiva",
+    "descripcion": "Hidratación práctica",
+    "imagen": "/assets/img/botella-deportiva.jpg",
+    "precioEnPuntos": 1499,
+    "categoriaId": 6
+  },
+  {
+    "id": 8,
+    "nombre": "Mat de Yoga",
+    "descripcion": "Suave y antideslizante",
+    "imagen": "/assets/img/mat-de-yoga.jpg",
+    "precioEnPuntos": 2199,
+    "categoriaId": 5
+  },
+  {
+    "id": 9,
+    "nombre": "Mancuernas",
+    "descripcion": "Entrenamiento en casa",
+    "imagen": "/assets/img/mancuernas.jpg",
+    "precioEnPuntos": 3899,
+    "categoriaId": 5
+  },
+  {
+    "id": 10,
+    "nombre": "Raqueta de Tenis",
+    "descripcion": "Precisa y liviana",
+    "imagen": "/assets/img/raqueta-tenis.jpg",
+    "precioEnPuntos": 7499,
+    "categoriaId": 3
+  },
+  {
+    "id": 11,
+    "nombre": "Pelota de Fútbol",
+    "descripcion": "Para entrenamiento",
+    "imagen": "/assets/img/pelota-futbol.jpg",
+    "precioEnPuntos": 2999,
+    "categoriaId": 3
+  },
+  {
+    "id": 12,
+    "nombre": "Pelota de Básquet",
+    "descripcion": "Agarre mejorado",
+    "imagen": "/assets/img/pelota-basquet.jpg",
+    "precioEnPuntos": 3499,
+    "categoriaId": 3
   }
 ]

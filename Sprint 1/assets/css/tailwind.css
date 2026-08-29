@@ -46,6 +46,21 @@
     @apply bg-white text-dark border border-border;
   }
 
+  /* IconButton (atoms/iconButton.ejs). Se mantiene separado para no afectar otros botones. */
+  .icon-btn {
+    @apply inline-flex h-11 w-11 items-center justify-center rounded-md
+           border-none cursor-pointer transition-opacity hover:opacity-90;
+  }
+  .icon-btn--primary {
+    @apply bg-dark text-white;
+  }
+  .icon-btn--secondary {
+    @apply bg-white text-dark border border-border;
+  }
+  .icon-btn__icon {
+    @apply block h-4 w-4;
+  }
+
   /* Input (atoms/input.ejs) */
   .input {
     @apply block w-full px-4 py-2 border border-border rounded-sm
@@ -87,6 +102,9 @@
   }
   .search-bar .input {
     @apply border-none rounded-none flex-1;
+  }
+  .search-bar .icon-btn {
+    @apply rounded-none border-l border-border;
   }
 
   /* Grupo de campo de formulario (molecules/formGroup.ejs) */

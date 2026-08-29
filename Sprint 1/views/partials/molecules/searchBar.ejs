@@ -3,14 +3,18 @@
 <%# action indica la URL que recibira los datos enviados por el formulario. %>
 <%# /productos es la ruta del servidor encargada de procesar la busqueda. %>
 <%# method="GET" envia los datos como parametros visibles en la URL, por ejemplo ?q=camisa. %>
-<form class="search-bar" action="/productos" method="GET">
+<form class="search-bar" action="/products" method="GET">
   <%# include incorpora el contenido de otro partial EJS dentro de este archivo. %>
   <%# ../atoms/input accede al atomo input ubicado en la carpeta atoms. %>
   <%# El objeto entre llaves envia configuracion al partial incluido. %>
   <%# type search crea un campo optimizado para introducir terminos de busqueda. %>
-  <%# name q define el nombre del parametro que recibira la ruta /productos. %>
+  <%# name q define el nombre del parametro que recibira la ruta /products. %>
   <%# label vacio evita mostrar un texto visible, aunque el atomo conserva la etiqueta HTML. %>
   <%# placeholder muestra una sugerencia mientras el campo esta vacio. %>
-  <%- include('../atoms/input', { type: 'search', name: 'q', label: '', placeholder: 'Buscar productos...' }) %>
-  <%- include('../atoms/button', { text: 'Buscar', type: 'submit', variant: 'secondary' }) %>
+  <%- include('../atoms/input', { type: 'search', name: 'q', label: '', placeholder: 'Search products...' }) %>
+  <%# La lupa se entrega como SVG desde esta molecula para que el boton %>
+  <%# por defecto siga siendo de texto y solo la barra de busqueda use un %>
+  <%# control de imagen. Esto evita que todo boton tenga icono de buscador. %>
+  <% const searchIcon = '<svg class="icon-btn__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="5.5" fill="none" stroke="currentColor" stroke-width="2"></circle><path d="M16 16L21 21" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>' %>
+  <%- include('../atoms/iconButton', { type: 'submit', variant: 'secondary', icon: searchIcon, ariaLabel: 'Buscar productos', title: 'Buscar productos' }) %>
 </form>

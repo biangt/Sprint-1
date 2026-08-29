@@ -1,7 +1,7 @@
 <%# Esta molecula combina imagen, nombre, precio y boton para representar un producto. %>
 <%# href construye la ruta usando el id unico del objeto producto. %>
 <%# El id del producto se lee de producto.id y se inserta escapado en el HTML. %>
-<a href="/productos/<%= producto.id %>" class="product-card">
+<a href="/products/<%= producto.id %>" class="product-card">
   <img src="<%= producto.imagen %>" alt="<%= producto.nombre %>" />
   <div class="product-card__body">
     <h3 class="product-card__title"><%= producto.nombre %></h3>

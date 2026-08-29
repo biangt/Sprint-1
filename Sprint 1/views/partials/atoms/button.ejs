@@ -14,6 +14,13 @@
   termina eliminando esa regla del CSS final. Por eso aca se arma con
   un ternario que escribe el nombre entero de una sola vez.
 %>
-<button type="<%= typeof type !== 'undefined' ? type : 'button' %>" class="btn <%= (typeof variant !== 'undefined' && variant === 'secondary') ? 'btn--secondary' : 'btn--primary' %>">
-    <%= text %>
+<%# Este boton queda reservado para texto. Si se necesita icono, se usa un %>
+<%# atomo dedicado y no se asume un icono por defecto para todos los botones. %>
+<button
+  type="<%= typeof type !== 'undefined' ? type : 'button' %>"
+  class="btn <%= (typeof variant !== 'undefined' && variant === 'secondary') ? 'btn--secondary' : 'btn--primary' %>"
+  <%= typeof ariaLabel !== 'undefined' && ariaLabel ? 'aria-label="' + ariaLabel + '"' : '' %>
+  <%= typeof title !== 'undefined' && title ? 'title="' + title + '"' : '' %>
+>
+  <%= text %>
 </button>

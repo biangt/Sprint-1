@@ -7,7 +7,7 @@
       <%# href crea una URL con el filtro categoria en la cadena de consulta. %>
       <%# categoria.slug contiene la version preparada para usar en la URL. %>
       <%# categoria.nombre muestra el nombre legible para la persona usuaria. %>
-      <li><a href="/productos?categoria=<%= categoria.slug %>"><%= categoria.nombre %></a></li>
+      <li><a href="/products?categoria=<%= categoria.slug %>"><%= categoria.nombre %></a></li>
     <% }) %>
   </ul>
   <p>&copy; <%= new Date().getFullYear() %> MiEcommerce</p>

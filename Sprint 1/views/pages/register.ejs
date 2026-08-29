@@ -12,14 +12,14 @@
   <%- include('../partials/organisms/header') %>
 
   <main>
-    <h1>Crear cuenta</h1>
-    <form action="/registro" method="POST" class="register-form">
-      <%- include('../partials/molecules/formGroup', { type: 'text', name: 'nombre', label: 'Nombre', required: true }) %>
+    <h1>Create account</h1>
+    <form action="/register" method="POST" class="register-form">
+      <%- include('../partials/molecules/formGroup', { type: 'text', name: 'nombre', label: 'Name', required: true }) %>
       <%- include('../partials/molecules/formGroup', { type: 'email', name: 'email', label: 'Email', required: true }) %>
-      <%- include('../partials/molecules/formGroup', { type: 'password', name: 'password', label: 'Contraseña', required: true }) %>
-      <%- include('../partials/atoms/button', { text: 'Registrarse', type: 'submit', variant: 'primary' }) %>
+      <%- include('../partials/molecules/formGroup', { type: 'password', name: 'password', label: 'Password', required: true }) %>
+      <%- include('../partials/atoms/button', { text: 'Register', type: 'submit', variant: 'primary' }) %>
     </form>
-    <a href="/acceso">¿Ya tenés cuenta? Iniciá sesión</a>
+    <a href="/login">¿Ya tenés cuenta? Iniciá sesión</a>
   </main>
 
   <%- include('../partials/organisms/footer') %>
