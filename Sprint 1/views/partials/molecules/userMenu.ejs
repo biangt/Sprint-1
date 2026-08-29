@@ -1,0 +1,11 @@
+<%#
+  Esta molecula muestra el avatar y el nombre de la persona logueada.
+  nombre es la variable recibida por el partial.
+  Nota: por ahora no hay sesiones de usuario implementadas, asi que el
+  nombre se pasa como valor fijo desde la vista que la incluye. Cuando
+  exista login real, este dato deberia venir de la sesion del usuario.
+%>
+<a href="/login" class="user-menu-trigger">
+  <%- include('../atoms/avatar', { nombre: nombre }) %>
+  <span class="user-menu-trigger__name"><%= nombre %></span>
+</a>

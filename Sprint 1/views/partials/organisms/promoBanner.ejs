@@ -1,0 +1,43 @@
+<%#
+  Este organismo arma el hero de promociones (fondo verde, dos tarjetas)
+  que aparece debajo de la franja de categorías en el home.
+
+  promos es un arreglo opcional de objetos:
+    { imagen: '/assets/img/...', titulo: '...', subtitulo: '...' }
+  Si no se pasa "promos" desde la vista, se usan estos valores por defecto
+  para que la sección nunca quede vacía.
+
+  Nota: en el diseño de Figma estas tarjetas muestran logos y personajes de
+  servicios de streaming (Disney+, HBO Max, ESPN, etc.). Esas imágenes son
+  contenido con marca registrada de terceros, así que no las reproducimos
+  acá: se deja el mismo layout con imágenes propias/placeholder para que
+  reemplaces por tus propias piezas de marketing.
+%>
+<%
+  const defaultPromos = [
+    {
+      imagen: '/assets/img/placeholder-producto.png',
+      titulo: '50% OFF en tu primera compra',
+      subtitulo: 'Canjeando 50.000 puntos MiEcommerce.'
+    },
+    {
+      imagen: '/assets/img/placeholder-producto.png',
+      titulo: '50% OFF en productos seleccionados',
+      subtitulo: 'Canjeando 50.000 puntos MiEcommerce.'
+    }
+  ];
+  const promoList = (typeof promos !== 'undefined' && promos && promos.length) ? promos : defaultPromos;
+%>
+<section class="hero" aria-label="Promociones destacadas">
+  <div class="hero__grid">
+    <% promoList.forEach(function(promo) { %>
+      <article class="hero__banner">
+        <img src="<%= promo.imagen %>" alt="<%= promo.titulo %>" class="hero__banner-img" />
+        <div class="hero__banner-caption">
+          <p class="hero__banner-title"><%= promo.titulo %></p>
+          <p class="hero__banner-subtitle"><%= promo.subtitulo %></p>
+        </div>
+      </article>
+    <% }) %>
+  </div>
+</section>

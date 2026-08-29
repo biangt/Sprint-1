@@ -1,0 +1,4 @@
+<%# Este atomo dibuja un circulo con la inicial de un nombre. %>
+<%# nombre es la variable que recibe el partial con el nombre completo. %>
+<% const inicial = (typeof nombre !== 'undefined' && nombre) ? nombre.trim().charAt(0).toUpperCase() : '?'; %>
+<span class="avatar" aria-hidden="true"><%= inicial %></span>
