@@ -1,0 +1,7 @@
+<div class="form-group">
+  <%# include incorpora el contenido de otro partial EJS dentro de este archivo. Muestra mensajes de error debajo del input si los recibe%>
+  <%- include('../atoms/input', { type: type, name: name, label: label, placeholder: typeof placeholder !== 'undefined' ? placeholder : '', required: required }) %>
+  <% if (typeof error !== 'undefined' && error) { %>
+    <small class="form-group__error"><%= error %></small>
+  <% } %>
+</div>

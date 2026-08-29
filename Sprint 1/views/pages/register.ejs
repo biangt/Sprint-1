@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>ZEUS - Registro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+</head>
+<body>
+  <%- include('../partials/organisms/header') %>
+
+  <main>
+    <h1>Crear cuenta</h1>
+    <form action="/registro" method="POST" class="register-form">
+      <%- include('../partials/molecules/formGroup', { type: 'text', name: 'nombre', label: 'Nombre', required: true }) %>
+      <%- include('../partials/molecules/formGroup', { type: 'email', name: 'email', label: 'Email', required: true }) %>
+      <%- include('../partials/molecules/formGroup', { type: 'password', name: 'password', label: 'Contraseña', required: true }) %>
+      <%- include('../partials/atoms/button', { text: 'Registrarse', type: 'submit', variant: 'primary' }) %>
+    </form>
+    <a href="/acceso">¿Ya tenés cuenta? Iniciá sesión</a>
+  </main>
+
+  <%- include('../partials/organisms/footer') %>
+</body>
+</html>

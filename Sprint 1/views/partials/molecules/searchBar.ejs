@@ -1,0 +1,16 @@
+<%# Esta molecula combina un campo de entrada y un boton para buscar productos. %>
+<%# <form> agrupa controles y permite enviar sus datos al servidor. %>
+<%# action indica la URL que recibira los datos enviados por el formulario. %>
+<%# /productos es la ruta del servidor encargada de procesar la busqueda. %>
+<%# method="GET" envia los datos como parametros visibles en la URL, por ejemplo ?q=camisa. %>
+<form class="search-bar" action="/productos" method="GET">
+  <%# include incorpora el contenido de otro partial EJS dentro de este archivo. %>
+  <%# ../atoms/input accede al atomo input ubicado en la carpeta atoms. %>
+  <%# El objeto entre llaves envia configuracion al partial incluido. %>
+  <%# type search crea un campo optimizado para introducir terminos de busqueda. %>
+  <%# name q define el nombre del parametro que recibira la ruta /productos. %>
+  <%# label vacio evita mostrar un texto visible, aunque el atomo conserva la etiqueta HTML. %>
+  <%# placeholder muestra una sugerencia mientras el campo esta vacio. %>
+  <%- include('../atoms/input', { type: 'search', name: 'q', label: '', placeholder: 'Buscar productos...' }) %>
+  <%- include('../atoms/button', { text: 'Buscar', type: 'submit', variant: 'secondary' }) %>
+</form>

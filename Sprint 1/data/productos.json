@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "nombre": "Zapatillas urbanas",
+    "imagen": "/assets/img/zapatillas.jpg",
+    "precioEnPuntos": 1200,
+    "categoriaId": 4
+  },
+  {
+    "id": 2,
+    "nombre": "Mochila",
+    "imagen": "/assets/img/mochila.jpg",
+    "precioEnPuntos": 800,
+    "categoriaId": 7
+  }
+]

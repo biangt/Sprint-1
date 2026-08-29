@@ -1,0 +1,19 @@
+
+<%# El atributo type indica el comportamiento del boton dentro de un formulario. %>
+<%# La sintaxis de interpolacion evalua una expresion EJS y escribe su resultado en el HTML. %>
+<%# typeof type comprueba de forma segura si existe la variable type. devuelve el tipo de un valor como texto%>
+<%# type es la variable recibida por el partial, por ejemplo submit, reset o button.  ? : forman el operador ternario: si la condicion es verdadera usa type; si no, usa button. %>
+<%# El atributo class asigna nombres de clases CSS al elemento. %>
+<%# variant es la variable opcional que puede indicar primary, secondary u otro estilo. %>
+<%#
+  Importante para Tailwind: NO se arma la clase concatenando texto
+  (el prefijo "btn--" mas la variable variant), porque Tailwind solo
+  genera y conserva el CSS de las clases que puede leer completas y
+  literales en el archivo. Si el nombre queda partido en interpolaciones
+  separadas, Tailwind nunca ve la palabra completa "btn--primary" y
+  termina eliminando esa regla del CSS final. Por eso aca se arma con
+  un ternario que escribe el nombre entero de una sola vez.
+%>
+<button type="<%= typeof type !== 'undefined' ? type : 'button' %>" class="btn <%= (typeof variant !== 'undefined' && variant === 'secondary') ? 'btn--secondary' : 'btn--primary' %>">
+    <%= text %>
+</button>

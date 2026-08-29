@@ -1,0 +1,10 @@
+[
+  { "id": 1, "nombre": "Electrónica", "slug": "electronica" },
+  { "id": 2, "nombre": "Alimentos", "slug": "alimentos" },
+  { "id": 3, "nombre": "Bebidas", "slug": "bebidas" },
+  { "id": 4, "nombre": "Indumentaria", "slug": "indumentaria" },
+  { "id": 5, "nombre": "Juegos", "slug": "juegos" },
+  { "id": 6, "nombre": "Automotor", "slug": "automotor" },
+  { "id": 7, "nombre": "Hogar", "slug": "hogar" },
+  { "id": 8, "nombre": "Otros", "slug": "otros" }
+]

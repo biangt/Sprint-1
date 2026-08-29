@@ -1,0 +1,8 @@
+<%# Este organismo muestra una coleccion de productos en forma de cuadricula. %>
+<%# <section> agrupa semanticamente el contenido relacionado de la cuadricula. %>
+<section class="product-grid">
+  <%# productos es el arreglo de datos recibido por esta plantilla. %>
+  <% productos.forEach(function(producto) { %>
+    <%- include('../molecules/productCard', { producto: producto }) %>
+  <% }) %>
+</section>

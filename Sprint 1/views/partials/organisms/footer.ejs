@@ -1,0 +1,14 @@
+<%# Este organismo construye el pie comun del sitio con categorias y copyright. %>
+<footer class="site-footer">
+  <%# <ul> crea una lista sin orden para mostrar las categorias. %>
+  <ul class="categorias">
+    <% categorias.forEach(function(categoria) { %>
+      <%# <li> representa un elemento individual de la lista. %>
+      <%# href crea una URL con el filtro categoria en la cadena de consulta. %>
+      <%# categoria.slug contiene la version preparada para usar en la URL. %>
+      <%# categoria.nombre muestra el nombre legible para la persona usuaria. %>
+      <li><a href="/productos?categoria=<%= categoria.slug %>"><%= categoria.nombre %></a></li>
+    <% }) %>
+  </ul>
+  <p>&copy; <%= new Date().getFullYear() %> MiEcommerce</p>
+</footer>

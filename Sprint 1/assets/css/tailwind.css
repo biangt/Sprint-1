@@ -1,0 +1,169 @@
+/* =====================================================================
+   MiEcommerce — entrada de Tailwind
+   Este es el archivo FUENTE. Tailwind lo lee, resuelve las directivas
+   @tailwind y @apply, y genera el CSS final en assets/css/styles.css
+   (ese archivo generado es el que cargan las vistas .ejs — no lo
+   edites a mano, se sobreescribe en cada build).
+   ===================================================================== */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------------------------
+   BASE — estilos por defecto del documento
+   --------------------------------------------------------------------- */
+@layer base {
+  body {
+    @apply m-0 font-sans font-normal text-black bg-bg;
+  }
+
+  a {
+    @apply text-inherit no-underline;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   COMPONENTES — mantenemos los mismos nombres de clase que ya usaban
+   las vistas (btn, product-card, site-header, etc., del diseño atómico
+   de la US#1) pero ahora cada uno se define con @apply de utilidades
+   de Tailwind en vez de CSS suelto.
+   --------------------------------------------------------------------- */
+@layer components {
+
+  /* --- Atoms --- */
+
+  /* Botón (atoms/button.ejs). Variantes: btn--primary / btn--secondary */
+  .btn {
+    @apply inline-flex items-center justify-center px-4 py-2 rounded-md
+           font-sans text-sm border-none cursor-pointer transition-opacity
+           hover:opacity-90;
+  }
+  .btn--primary {
+    @apply bg-dark text-white;
+  }
+  .btn--secondary {
+    @apply bg-white text-dark border border-border;
+  }
+
+  /* Input (atoms/input.ejs) */
+  .input {
+    @apply block w-full px-4 py-2 border border-border rounded-sm
+           font-sans text-sm text-black;
+  }
+
+  /* Precio (atoms/price.ejs) */
+  .price {
+    @apply font-bold text-black;
+  }
+  .price--lg {
+    @apply text-4xl; /* 40px, precio grande en detalle de producto */
+  }
+
+  /* Logo (atoms/logo.ejs) */
+  .logo img {
+    @apply h-8 w-auto;
+  }
+
+  /* --- Molecules --- */
+
+  /* Tarjeta de producto (molecules/productCard.ejs) */
+  .product-card {
+    @apply block bg-white rounded-md shadow-card overflow-hidden;
+  }
+  .product-card img {
+    @apply w-full block;
+  }
+  .product-card__body {
+    @apply p-4;
+  }
+  .product-card__title {
+    @apply text-sm mb-2;
+  }
+
+  /* Barra de búsqueda (molecules/searchBar.ejs) */
+  .search-bar {
+    @apply flex items-center border border-border rounded-sm overflow-hidden;
+  }
+  .search-bar .input {
+    @apply border-none rounded-none flex-1;
+  }
+
+  /* Grupo de campo de formulario (molecules/formGroup.ejs) */
+  .form-group {
+    @apply mb-4 flex flex-col gap-1;
+  }
+  .form-group__error {
+    @apply text-xs text-red-600;
+  }
+
+  /* --- Organisms --- */
+
+  /* Header (organisms/header.ejs) */
+  .site-header {
+    @apply flex items-center justify-between px-8 py-4 bg-white gap-4;
+  }
+  .site-nav {
+    @apply flex items-center gap-4;
+  }
+
+  /* Franja de categorías */
+  .categories-nav {
+    @apply flex gap-4 px-8 py-4;
+  }
+
+  /* Hero / banner promocional de la Home */
+  .hero {
+    @apply bg-primary px-8 py-8;
+  }
+  .hero__banner {
+    @apply rounded-md shadow-card overflow-hidden;
+  }
+
+  /* Grilla de productos (organisms/productGrid.ejs) */
+  .product-grid {
+    @apply grid grid-cols-2 md:grid-cols-4 gap-4 px-8 py-8;
+  }
+
+  /* Footer (organisms/footer.ejs) */
+  .site-footer {
+    @apply bg-dark text-white px-8 py-4;
+  }
+  .site-footer .categorias {
+    @apply list-none flex flex-wrap gap-4 m-0 p-0;
+  }
+
+  /* Menú desplegable de usuario */
+  .user-menu {
+    @apply absolute w-52 bg-white rounded-md shadow-menu overflow-hidden;
+  }
+  .user-menu__item {
+    @apply p-4 border-b border-border;
+  }
+
+  /* --- Pages --- */
+
+  /* Tarjeta de login/registro */
+  .auth-card {
+    @apply max-w-md mx-auto my-8 p-8 bg-white rounded-md shadow-card;
+  }
+  .register-form {
+    @apply flex flex-col gap-4 max-w-md mx-auto my-8 p-8 bg-white rounded-md shadow-card;
+  }
+
+  /* Panel de detalle de producto */
+  .product-detail {
+    @apply w-full md:w-80 p-4 border border-border;
+  }
+
+  /* Tarjeta del carrito */
+  .cart-card {
+    @apply bg-white p-4;
+  }
+  .cart-item {
+    @apply flex items-center justify-between py-4 border-b border-border;
+  }
+  .cart-item__remove {
+    @apply rounded-md bg-dark text-white border-none px-3 py-1 text-xs;
+  }
+}

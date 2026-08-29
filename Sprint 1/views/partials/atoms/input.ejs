@@ -1,0 +1,14 @@
+
+<%# label texto descriptivo que vera la persona usuaria. %>
+<label for="<%= name %>"><%= label %></label>
+<%# id proporciona un identificador unico y permite que label lo encuentre mediante for. %>
+<%# name es la clave con la que el formulario enviaria el valor al servidor. %>
+<%# placeholder muestra una ayuda dentro del campo. %>
+<input
+  type="<%= typeof type !== 'undefined' ? type : 'text' %>"
+  id="<%= name %>"
+  name="<%= name %>"
+  class="input"
+  placeholder="<%= typeof placeholder !== 'undefined' ? placeholder : '' %>"
+  <%= (typeof required !== 'undefined' && required) ? 'required' : '' %>
+/>
