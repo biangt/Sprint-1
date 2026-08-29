@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>MiEcommerce - Carrito</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+</head>
+<body>
+  <%- include('../partials/organisms/header') %>
+
+  <div class="cart-header">
+    <%# Escenario US#7: un boton que dirija a la pagina de inicio. %>
+    <a href="/">&larr; Volver al listado</a>
+    <h1>Productos en tu Carrito</h1>
+  </div>
+
+  <% if (items.length > 0) { %>
+    <%# <ul>/<li>: la lista de productos es semanticamente eso, una lista. %>
+    <ul class="cart-card">
+      <% items.forEach(function(item) { %>
+        <li class="cart-item">
+          <div class="cart-item__product">
+            <img class="cart-item__image" src="<%= item.imagen %>" alt="<%= item.nombre %>" />
+            <span><%= item.nombre %></span>
+          </div>
+
+          <div class="cart-item__controls">
+            <button type="button" class="cart-item__remove">Quitar</button>
+
+            <%# Grupo de cantidad: se marca con role="group" y aria-label para %>
+            <%# que un lector de pantalla anuncie que "menos", el numero y "mas" %>
+            <%# forman un unico control, no tres botones sueltos sin relacion. %>
+            <div class="cart-item__qty" role="group" aria-label="Cantidad de <%= item.nombre %>">
+              <button type="button" aria-label="Quitar una unidad de <%= item.nombre %>">&minus;</button>
+              <span><%= item.cantidad %></span>
+              <button type="button" aria-label="Agregar una unidad de <%= item.nombre %>">&plus;</button>
+            </div>
+
+            <span class="cart-item__price"><%= item.subtotal.toLocaleString('es-AR') %> pts</span>
+          </div>
+        </li>
+      <% }) %>
+    </ul>
+
+    <div class="cart-summary">
+      <div class="cart-summary__total">
+        <span>Total de Puntos</span>
+        <strong><%= total.toLocaleString('es-AR') %></strong>
+      </div>
+      <%# Escenario US#7: un boton que dirija a la pagina de pago. %>
+      <a href="/checkout" class="btn btn--primary">Ir a Pagar</a>
+    </div>
+  <% } else { %>
+    <p class="cart-empty">Tu carrito está vacío. <a href="/products">Ver productos</a>.</p>
+  <% } %>
+
+  <%- include('../partials/organisms/footer') %>
+</body>
+</html>

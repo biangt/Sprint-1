@@ -4,14 +4,16 @@
     "nombre": "Zapatillas urbanas",
     "imagen": "/assets/img/zapatillas.jpg",
     "precioEnPuntos": 1200,
-    "categoriaId": 4
+    "categoriaId": 4,
+    "descripcion": "Estilo urbano para el día a día, livianas y transpirables."
   },
   {
     "id": 2,
     "nombre": "Mochila",
     "imagen": "/assets/img/mochila.jpg",
     "precioEnPuntos": 800,
-    "categoriaId": 7
+    "categoriaId": 7,
+    "descripcion": "Espacio de sobra para tus cosas, con compartimentos internos."
   },
   {
     "id": 3,

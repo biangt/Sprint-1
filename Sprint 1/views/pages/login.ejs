@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>MiEcommerce - Iniciar sesión</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+</head>
+<body>
+  <%- include('../partials/organisms/header') %>
+
+  <%# Misma franja teal + tarjeta que register.ejs (auth-hero / auth-form), %>
+  <%# así login y registro se ven consistentes, como en el Figma. %>
+  <section class="auth-hero">
+    <form action="/login" method="POST" class="auth-form">
+      <h1>¡Hola!</h1>
+      <%- include('../partials/molecules/formGroup', { type: 'text', name: 'username', label: 'Usuario', required: true }) %>
+      <%- include('../partials/molecules/formGroup', { type: 'password', name: 'password', label: 'Contraseña', required: true }) %>
+      <%- include('../partials/atoms/button', { text: 'Iniciar Sesión', type: 'submit', variant: 'primary' }) %>
+      <a href="/register">¿No tenés cuenta? Registrate</a>
+    </form>
+  </section>
+
+  <%- include('../partials/organisms/footer') %>
+</body>
+</html>
