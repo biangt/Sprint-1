@@ -1,0 +1,10 @@
+# Dependencias instaladas por npm — se generan con "npm install" a partir
+# de package.json, no hace falta (ni conviene) subirlas al repo: pesan
+# muchisimo, son distintas segun el sistema operativo de cada persona
+# (por eso el "Permission denied" que le paso a tu compañera en Linux),
+# y hacen que cualquier operacion de git sea mucho mas lenta.
+node_modules/
+
+# Carpetas/archivos que a veces genera el sistema operativo o el editor
+.DS_Store
+Thumbs.db
