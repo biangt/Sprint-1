@@ -14,8 +14,13 @@
    BASE — estilos por defecto del documento
    --------------------------------------------------------------------- */
 @layer base {
+  /* flex + min-h-screen + flex-col: el body ocupa como minimo toda la altura
+     de la pantalla y acomoda a sus hijos (header, contenido, footer) en
+     columna. Junto con "mt-auto" en .site-footer (mas abajo), esto logra
+     que el footer quede siempre pegado abajo, tenga la pagina poco o
+     mucho contenido (patron clasico de "sticky footer" con Flexbox). */
   body {
-    @apply m-0 font-sans font-normal text-black bg-bg;
+    @apply m-0 flex min-h-screen flex-col font-sans font-normal text-black bg-bg;
   }
 
   a {
@@ -99,7 +104,8 @@
 
   /* Barra de búsqueda (molecules/searchBar.ejs) */
   .search-bar {
-    @apply flex items-center border border-border rounded-sm overflow-hidden;
+    @apply flex items-center border border-border rounded-sm overflow-hidden
+           order-3 w-full md:order-none md:w-80;
   }
   .search-bar .input {
     @apply border-none rounded-none flex-1;
@@ -120,10 +126,10 @@
 
   /* Header (organisms/header.ejs) */
   .site-header {
-    @apply flex items-center justify-between px-8 py-4 bg-white gap-4;
+    @apply flex flex-wrap items-center justify-between px-4 md:px-8 py-4 bg-white gap-4;
   }
   .site-nav {
-    @apply flex items-center gap-4;
+    @apply flex items-center flex-wrap gap-4;
   }
 
   /* Franja de categorías */
@@ -145,8 +151,12 @@
   }
 
   /* Footer (organisms/footer.ejs) */
+  /* mt-auto: en un contenedor flex-col, este margen se estira y absorbe
+     todo el espacio libre que quede arriba, empujando el footer hasta
+     el fondo. shrink-0 evita que el footer se achique si el contenido
+     de arriba llegara a necesitar mas lugar del disponible. */
   .site-footer {
-    @apply bg-dark text-white px-8 py-4;
+    @apply mt-auto shrink-0 bg-dark text-white px-8 py-4;
   }
   .site-footer .categorias {
     @apply list-none flex flex-wrap gap-4 m-0 p-0;
@@ -166,23 +176,107 @@
   .auth-card {
     @apply max-w-md mx-auto my-8 p-8 bg-white rounded-md shadow-card;
   }
-  .register-form {
-    @apply flex flex-col gap-4 max-w-md mx-auto my-8 p-8 bg-white rounded-md shadow-card;
+
+  /* Franja teal detrás de las tarjetas de login/registro (Figma).
+     Tarjeta chica y compacta, como en el prototipo (no un formulario grande). */
+  .auth-hero {
+    @apply bg-primary pt-8 pb-16 px-4 md:px-8;
+  }
+  .auth-form {
+    @apply flex flex-col gap-2 w-full max-w-xs mx-auto -mt-2 mb-8 p-6
+           bg-white rounded-md shadow-card text-center;
+  }
+  .auth-form h1 {
+    @apply text-xl font-bold mb-2 text-left;
+  }
+  .auth-form .form-group {
+    @apply mb-0 text-left;
+  }
+  .auth-form .input {
+    @apply py-1.5 px-3 text-xs;
+  }
+  .auth-form .btn {
+    @apply py-1.5 text-sm mt-1;
+  }
+  .auth-form a {
+    @apply text-xs underline mt-1;
   }
 
-  /* Panel de detalle de producto */
+  /* Panel de detalle de producto (sin usar todavia, se deja por si se retoma) */
   .product-detail {
     @apply w-full md:w-80 p-4 border border-border;
   }
 
-  /* Tarjeta del carrito */
+  /* Pagina de producto (pages/product.ejs) — US#6 */
+  .breadcrumb {
+    @apply flex items-center gap-2 px-4 md:px-8 py-4 text-sm text-dark;
+  }
+  .breadcrumb a {
+    @apply underline;
+  }
+  .product-page {
+    @apply flex flex-col md:flex-row gap-8 px-4 md:px-8 pb-8;
+  }
+  .product-page__gallery {
+    @apply w-full md:w-1/2 bg-white rounded-md shadow-card overflow-hidden;
+  }
+  .product-page__gallery img {
+    @apply w-full h-full object-cover block;
+  }
+  .product-page__info {
+    @apply flex-1 flex flex-col items-start gap-4;
+  }
+  .product-page__description {
+    @apply text-sm text-dark;
+  }
+
+  /* Pagina de carrito (pages/cart.ejs) — US#7 */
+  .cart-header {
+    @apply flex flex-col gap-2 px-4 md:px-8 pt-8 pb-4;
+  }
+  .cart-header a {
+    @apply text-sm underline;
+  }
+
+  /* Lista de productos del carrito. Cada item es su propia tarjeta blanca */
+  /* (no una lista con lineas divisorias), para calzar con el diseno de Figma. */
   .cart-card {
-    @apply bg-white p-4;
+    @apply list-none flex flex-col gap-4 px-4 md:px-8 pb-8 m-0;
   }
   .cart-item {
-    @apply flex items-center justify-between py-4 border-b border-border;
+    @apply flex flex-wrap items-center justify-between gap-4 p-4
+           bg-white rounded-md shadow-card;
+  }
+  .cart-item__product {
+    @apply flex items-center gap-4;
+  }
+  .cart-item__image {
+    @apply w-12 h-12 rounded-md object-cover;
+  }
+  .cart-item__controls {
+    @apply flex items-center gap-4;
   }
   .cart-item__remove {
-    @apply rounded-md bg-dark text-white border-none px-3 py-1 text-xs;
+    @apply rounded-md bg-dark text-white border-none px-3 py-1 text-xs cursor-pointer;
+  }
+  .cart-item__qty {
+    @apply flex items-center gap-3 border border-border rounded-md px-3 py-1 text-sm;
+  }
+  .cart-item__qty button {
+    @apply w-5 border-none bg-transparent cursor-pointer text-base leading-none;
+  }
+  .cart-item__price {
+    @apply font-bold;
+  }
+
+  /* Resumen y llamado a pagar, debajo de la lista */
+  .cart-summary {
+    @apply flex flex-col items-end gap-4 px-4 md:px-8 pb-8;
+  }
+  .cart-summary__total {
+    @apply flex items-center gap-4 text-lg;
+  }
+  .cart-empty {
+    @apply px-4 md:px-8 pb-8;
   }
 }
