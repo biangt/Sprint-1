@@ -133,5 +133,5 @@ app.get('/acceso', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`MiEcommerce corriendo en http://localhost:${PORT}`);
+  console.log(`ZEUS corriendo en http://localhost:${PORT}`);
 });
