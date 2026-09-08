@@ -279,6 +279,26 @@
   .cart-empty {
     @apply px-4 md:px-8 pb-8;
   }
+
+  /* Pagina de error 404 (pages/notFound.ejs) */
+  .not-found {
+    @apply flex flex-col;
+  }
+  .not-found__banner {
+    @apply block w-full h-56 md:h-80 object-cover;
+  }
+  .not-found__actions {
+    @apply flex flex-col items-center gap-4 px-4 md:px-8 py-12 text-center;
+  }
+  .not-found__actions h1 {
+    @apply text-2xl font-bold;
+  }
+  .not-found__actions p {
+    @apply text-dark;
+  }
+  .not-found__buttons {
+    @apply flex flex-wrap items-center justify-center gap-4;
+  }
 }
 
 

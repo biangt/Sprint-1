@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>MiEcommerce<%= producto ? ' - ' + producto.nombre : ' - Producto no encontrado' %></title>
+  <title>MiEcommerce - <%= producto.nombre %></title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet" />
@@ -11,40 +11,34 @@
 <body>
   <%- include('../partials/organisms/header') %>
 
-  <% if (producto) { %>
-    <%# categorias esta disponible en TODAS las vistas via app.locals (ver app.js). %>
-    <%# La buscamos aca para mostrar su nombre en la miga de pan (breadcrumb). %>
-    <% const categoria = categorias.find(function(c) { return c.id === producto.categoriaId; }); %>
+  <%# El controller ya redirige a /notFound si el producto no existe,
+      asi que aca "producto" siempre esta definido. %>
+  <%# categorias esta disponible en TODAS las vistas via app.locals (ver app.js). %>
+  <%# La buscamos aca para mostrar su nombre en la miga de pan (breadcrumb). %>
+  <% const categoria = categorias.find(function(c) { return c.id === producto.categoriaId; }); %>
 
-    <%# nav con aria-label identifica esta zona como una miga de pan para lectores de pantalla. %>
-    <nav class="breadcrumb" aria-label="Miga de pan">
-      <a href="/products">&larr; Volver al listado</a>
-      <% if (categoria) { %>
-        <span aria-hidden="true">&rsaquo;</span>
-        <span><%= categoria.nombre %></span>
-      <% } %>
-    </nav>
+  <%# nav con aria-label identifica esta zona como una miga de pan para lectores de pantalla. %>
+  <nav class="breadcrumb" aria-label="Miga de pan">
+    <a href="/products">&larr; Volver al listado</a>
+    <% if (categoria) { %>
+      <span aria-hidden="true">&rsaquo;</span>
+      <span><%= categoria.nombre %></span>
+    <% } %>
+  </nav>
 
-    <%# article: este bloque tiene sentido por si solo (es "un producto"), por eso no es un <div>. %>
-    <main class="product-page">
-      <article class="product-page__gallery">
-        <img src="<%= producto.imagen %>" alt="<%= producto.nombre %>" />
-      </article>
+  <%# article: este bloque tiene sentido por si solo (es "un producto"), por eso no es un <div>. %>
+  <main class="product-page">
+    <article class="product-page__gallery">
+      <img src="<%= producto.imagen %>" alt="<%= producto.nombre %>" />
+    </article>
 
-      <section class="product-page__info" aria-labelledby="product-title">
-        <h1 id="product-title"><%= producto.nombre %></h1>
-        <%- include('../partials/atoms/price', { puntos: producto.precioEnPuntos, size: 'lg' }) %>
-        <%- include('../partials/atoms/button', { text: 'Agregar al Carrito', variant: 'primary' }) %>
-        <p class="product-page__description"><%= producto.descripcion %></p>
-      </section>
-    </main>
-  <% } else { %>
-    <%# Bonus de la US#6 (pagina de error) todavia no implementado: %>
-    <%# por ahora, si no existe el producto, mostramos un aviso simple en vez de romper. %>
-    <main class="product-page">
-      <p>No encontramos este producto. <a href="/products">Volver al listado</a>.</p>
-    </main>
-  <% } %>
+    <section class="product-page__info" aria-labelledby="product-title">
+      <h1 id="product-title"><%= producto.nombre %></h1>
+      <%- include('../partials/atoms/price', { puntos: producto.precioEnPuntos, size: 'lg' }) %>
+      <%- include('../partials/atoms/button', { text: 'Agregar al Carrito', variant: 'primary' }) %>
+      <p class="product-page__description"><%= producto.descripcion %></p>
+    </section>
+  </main>
 
   <%- include('../partials/organisms/footer') %>
 </body>

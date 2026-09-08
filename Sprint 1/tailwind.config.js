@@ -4,7 +4,7 @@ module.exports = {
   // Si esta lista no incluye tus vistas .ejs, Tailwind no "ve" las clases
   // que usás ahí y termina generando un CSS vacío (la causa más común de
   // "Tailwind no funciona").
-  content: ['./views/**/*.ejs'],
+  content: ['./src/views/**/*.ejs'],
   // Red de seguridad: estas clases se generan a mano en @layer components
   // (no son utilidades de Tailwind), así que las forzamos a existir aunque
   // el escaneo de contenido no encuentre el nombre completo y literal en

@@ -16,4 +16,5 @@ router.get('/registro', (req, res) => res.redirect('/register'));
 router.post('/registro', (req, res) => res.redirect('/login'));
 router.get('/acceso', (req, res) => res.redirect('/login'));
 
+
 module.exports = router;

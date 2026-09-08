@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>ZEUS - Página no encontrada</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+</head>
+
+<body>
+  <%- include('../partials/organisms/header') %>
+
+  <main class="not-found">
+    <%# La imagen ya trae el "404" y el mensaje dibujados adentro,
+        por eso no se repite el texto encima. %>
+    <img
+      src="/assets/img/zeus404.jpg"
+      alt="Perro triste con el texto: 404, la página que buscás no existe"
+      class="not-found__banner"
+    />
+
+    <section class="not-found__actions">
+      <h1>¿Buscabas algo en particular?</h1>
+      <p>Esa página no existe, pero podés seguir mirando por acá.</p>
+      <div class="not-found__buttons">
+        <a href="/" class="btn btn--primary">Volver al inicio</a>
+        <a href="/products" class="btn btn--secondary">Ver productos</a>
+      </div>
+    </section>
+  </main>
+
+  <%- include('../partials/organisms/footer') %>
+</body>
+</html>

@@ -17,6 +17,17 @@ app.locals.categorias = categoryModel.getAll();
 app.use('/', pageRoutes);
 app.use('/', productRoutes);
 
+// 404 - ninguna ruta anterior coincidio
+app.use((req, res) => {
+  res.status(404).render('pages/notFound');
+});
+
+// 500 - error no manejado en alguna ruta anterior
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).send('Error del servidor');
+});
+
 app.listen(PORT, () => {
   console.log(`ZEUS corriendo en http://localhost:${PORT}`);
 });

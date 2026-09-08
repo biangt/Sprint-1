@@ -5,7 +5,13 @@ function showHome(req, res) {
 }
 
 function showProduct(req, res) {
-  res.render('pages/product', { producto: productModel.getById(req.params.id) });
+  const producto = productModel.getById(req.params.id);
+
+  if (!producto) {
+    return res.redirect('/notFound');
+  }
+
+  res.render('pages/product', { producto });
 }
 
 module.exports = { showHome, showProduct };
