@@ -9,9 +9,20 @@ const productModel = require('./productModel');
 
 // Agrega un producto al carrito. Si ya estaba, le suma 1 a la cantidad
 // en vez de crear una entrada duplicada (Escenario 1 de la US#4).
+// No deja superar el stock disponible: devuelve { cart, ok } para que el
+// controller sepa si tiene que avisarle algo a la persona usuaria.
 function addItem(cart, productId) {
   const idNumerico = Number(productId);
+  const producto = productModel.getById(idNumerico);
+
+  if (!producto) return { cart, ok: false, motivo: 'no-existe' };
+
   const itemExistente = cart.find((item) => item.productId === idNumerico);
+  const cantidadActual = itemExistente ? itemExistente.quantity : 0;
+
+  if (cantidadActual + 1 > producto.stock) {
+    return { cart, ok: false, motivo: 'sin-stock' };
+  }
 
   if (itemExistente) {
     itemExistente.quantity += 1;
@@ -19,25 +30,33 @@ function addItem(cart, productId) {
     cart.push({ productId: idNumerico, quantity: 1 });
   }
 
-  return cart;
+  return { cart, ok: true };
 }
 
 // Suma o resta 1 a la cantidad de un producto (delta = 1 o delta = -1).
 // Si la cantidad llega a 0, el producto se saca del carrito directamente
-// (Escenario 3).
+// (Escenario 3). Cuando delta suma (el botón +), no deja pasar del stock
+// disponible; el botón - (delta negativo) nunca necesita este chequeo.
 function updateQuantity(cart, productId, delta) {
   const idNumerico = Number(productId);
   const item = cart.find((item) => item.productId === idNumerico);
 
-  if (!item) return cart;
+  if (!item) return { cart, ok: true };
+
+  if (delta > 0) {
+    const producto = productModel.getById(idNumerico);
+    if (producto && item.quantity + delta > producto.stock) {
+      return { cart, ok: false, motivo: 'sin-stock' };
+    }
+  }
 
   item.quantity += delta;
 
   if (item.quantity <= 0) {
-    return cart.filter((i) => i.productId !== idNumerico);
+    return { cart: cart.filter((i) => i.productId !== idNumerico), ok: true };
   }
 
-  return cart;
+  return { cart, ok: true };
 }
 
 // Saca un producto del carrito por completo, sin importar la cantidad
@@ -76,3 +95,4 @@ function getSummary(cart) {
 }
 
 module.exports = { addItem, updateQuantity, removeItem, clear, getSummary };
+

@@ -3,7 +3,6 @@ const pageController = require('../controllers/pageController');
 
 const router = express.Router();
 
-router.get('/cart', pageController.showCart);
 router.get('/checkout', pageController.showCheckout);
 router.get('/register', pageController.showRegister);
 router.post('/register', pageController.register);

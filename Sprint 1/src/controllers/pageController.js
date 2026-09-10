@@ -1,9 +1,3 @@
-const cartModel = require('../models/cartModel');
-
-function showCart(req, res) {
-  res.render('pages/cart', cartModel.getSummary());
-}
-
 function showCheckout(req, res) {
   res.render('pages/checkout');
 }
@@ -25,7 +19,6 @@ function login(req, res) {
 }
 
 module.exports = {
-  showCart,
   showCheckout,
   showRegister,
   register,

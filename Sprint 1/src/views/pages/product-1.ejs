@@ -37,9 +37,13 @@
       <%- include('../partials/atoms/price', { puntos: producto.precioEnPuntos, size: 'lg' }) %>
       <%# El boton por si solo no manda nada: necesita estar dentro de un
           <form> que apunte a la ruta de agregar al carrito (US#4). %>
-      <form action="/cart/add/<%= producto.id %>" method="POST">
-        <%- include('../partials/atoms/button', { text: 'Agregar al Carrito', type: 'submit', variant: 'primary' }) %>
-      </form>
+      <% if (producto.stock > 0) { %>
+        <form action="/cart/add/<%= producto.id %>" method="POST">
+          <%- include('../partials/atoms/button', { text: 'Agregar al Carrito', type: 'submit', variant: 'primary' }) %>
+        </form>
+      <% } else { %>
+        <%- include('../partials/atoms/button', { text: 'Sin stock', type: 'button', variant: 'primary', disabled: true }) %>
+      <% } %>
       <p class="product-page__description"><%= producto.descripcion %></p>
     </section>
   </main>

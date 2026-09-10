@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Cadenas de texto que la contraseña nunca puede contener, por ser
   // demasiado obvias/fáciles de adivinar.
-  const CONTRASENAS_PROHIBIDAS = ['password', '1234', 'qwerty'];
+  const CONTRASENAS_PROHIBIDAS = ['password', '1234', 'qwerty', 'admin', 'usuario', 'contraseña', 'contrasena', 'contrasenia'];
 
   // Expresión regular (regex) que detecta si un texto tiene AL MENOS una letra.
   // "i" al final = ignora mayúsculas/minúsculas (no es indispensable acá,
