@@ -1,49 +1,55 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <title>MiEcommerce - <%= producto.nombre %></title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/assets/css/styles.css" />
-</head>
-<body>
-  <%- include('../partials/organisms/header') %>
+<%# El controller ya redirige a /notFound si el producto no existe,
+    asi que aca "producto" siempre esta definido. %>
+<%# categorias esta disponible en TODAS las vistas via app.locals (ver app.js). %>
+<%# La buscamos aca para mostrar su nombre en la miga de pan (breadcrumb). %>
+<% const categoria = categorias.find(function(c) { return c.id === producto.categoriaId; }); %>
 
-  <%# El controller ya redirige a /notFound si el producto no existe,
-      asi que aca "producto" siempre esta definido. %>
-  <%# categorias esta disponible en TODAS las vistas via app.locals (ver app.js). %>
-  <%# La buscamos aca para mostrar su nombre en la miga de pan (breadcrumb). %>
-  <% const categoria = categorias.find(function(c) { return c.id === producto.categoriaId; }); %>
+<%# nav con aria-label identifica esta zona como una miga de pan para lectores de pantalla. %>
+<nav class="breadcrumb" aria-label="Miga de pan">
+  <a href="/products">&larr; Volver al listado</a>
+  <% if (categoria) { %>
+    <span aria-hidden="true">&rsaquo;</span>
+    <span><%= categoria.nombre %></span>
+  <% } %>
+</nav>
 
-  <%# nav con aria-label identifica esta zona como una miga de pan para lectores de pantalla. %>
-  <nav class="breadcrumb" aria-label="Miga de pan">
-    <a href="/products">&larr; Volver al listado</a>
-    <% if (categoria) { %>
-      <span aria-hidden="true">&rsaquo;</span>
-      <span><%= categoria.nombre %></span>
-    <% } %>
-  </nav>
+<%# article: este bloque tiene sentido por si solo (es "un producto"), por eso no es un <div>. %>
+<main class="product-page">
+  <article class="product-page__gallery">
+    <%# Mismo fallback que ya tiene productCard.ejs: si "imagen" viene
+        vacia en el JSON, o si la ruta esta cargada pero el archivo no
+        existe (onerror), se muestra el placeholder en vez de dejar el
+        hueco de imagen rota. %>
+    <img
+      src="<%= (producto.imagen && producto.imagen.trim()) ? producto.imagen : '/assets/img/placeholder-producto.png' %>"
+      alt="<%= producto.nombre %>"
+      onerror="this.onerror=null; this.src='/assets/img/placeholder-producto.png';"
+    />
+  </article>
 
-  <%# article: este bloque tiene sentido por si solo (es "un producto"), por eso no es un <div>. %>
-  <main class="product-page">
-    <article class="product-page__gallery">
-      <img src="<%= producto.imagen %>" alt="<%= producto.nombre %>" />
-    </article>
-
-    <section class="product-page__info" aria-labelledby="product-title">
-      <h1 id="product-title"><%= producto.nombre %></h1>
-      <%- include('../partials/atoms/price', { puntos: producto.precioEnPuntos, size: 'lg' }) %>
-      <%# El boton por si solo no manda nada: necesita estar dentro de un
-          <form> que apunte a la ruta de agregar al carrito (US#4). %>
+  <section class="product-page__info" aria-labelledby="product-title">
+    <h1 id="product-title"><%= producto.nombre %></h1>
+    <%- include('../partials/atoms/price', { puntos: producto.precioEnPuntos, size: 'lg' }) %>
+    <%# El boton por si solo no manda nada: necesita estar dentro de un
+        <form> que apunte a la ruta de agregar al carrito (US#4). Si no
+        queda stock, no tiene sentido dejar agregar mas. %>
+    <% if (producto.stock > 0) { %>
       <form action="/cart/add/<%= producto.id %>" method="POST">
         <%- include('../partials/atoms/button', { text: 'Agregar al Carrito', type: 'submit', variant: 'primary' }) %>
       </form>
-      <p class="product-page__description"><%= producto.descripcion %></p>
-    </section>
-  </main>
+    <% } else { %>
+      <%- include('../partials/atoms/button', { text: 'Sin stock', type: 'button', variant: 'primary', disabled: true }) %>
+    <% } %>
+    <p class="product-page__description"><%= producto.descripcion %></p>
+  </section>
+</main>
 
-  <%- include('../partials/organisms/footer') %>
-</body>
-</html>
+<%# US#8: hasta 4 productos de la misma categoria, reutilizando el mismo
+    organismo (productGrid) y card (productCard) que ya usa la Home.
+    Si "relacionados" viene vacio (Escenario 3), se muestra el mensaje
+    amigable en vez de una seccion vacia. %>
+<%- include('../partials/organisms/productGrid', {
+  productos: relacionados,
+  titulo: 'Productos relacionados',
+  vacioMensaje: 'No hay productos relacionados disponibles.'
+}) %>

@@ -6,8 +6,7 @@
     "precioEnPuntos": 1200,
     "categoriaId": 5,
     "descripcion": "Estilo urbano para el día a día, livianas y transpirables.",
-    "stock": 10
-    
+    "stock": 0
   },
   {
     "id": 2,
@@ -16,7 +15,8 @@
     "precioEnPuntos": 800,
     "categoriaId": 6,
     "descripcion": "Espacio de sobra para tus cosas, con compartimentos internos.",
-    "stock": 15
+    "stock": 15,
+    "destacado": true
   },
   {
     "id": 3,
@@ -34,7 +34,8 @@
     "imagen": "/assets/img/mochila-deportiva.jpg",
     "precioEnPuntos": 5499,
     "categoriaId": 6,
-    "stock": 25
+    "stock": 25,
+    "destacado": true
   },
   {
     "id": 5,
@@ -79,7 +80,8 @@
     "imagen": "/assets/img/mancuernas.jpg",
     "precioEnPuntos": 3899,
     "categoriaId": 8,
-    "stock": 50
+    "stock": 50,
+    "destacado": true
   },
   {
     "id": 10,
@@ -107,5 +109,147 @@
     "precioEnPuntos": 3499,
     "categoriaId": 8,
     "stock": 65
+  },
+  {
+    "id": 13,
+    "nombre": "Auriculares Bluetooth",
+    "descripcion": "Sonido inalámbrico con cancelación de ruido básica.",
+    "imagen": "",
+    "precioEnPuntos": 4200,
+    "categoriaId": 1,
+    "stock": 20
+  },
+  {
+    "id": 14,
+    "nombre": "Parlante Portátil",
+    "descripcion": "Resistente al agua, ideal para exteriores.",
+    "imagen": "/assets/img/parlante-portatil.jpg",
+    "precioEnPuntos": 5600,
+    "categoriaId": 1,
+    "stock": 18,
+    "destacado": true
+  },
+  {
+    "id": 15,
+    "nombre": "Smartwatch Deportivo",
+    "descripcion": "Mide pasos, ritmo cardíaco y notificaciones.",
+    "imagen": "/assets/img/smartwatch.jpg",
+    "precioEnPuntos": 9800,
+    "categoriaId": 1,
+    "stock": 12,
+    "destacado": true
+  },
+  {
+    "id": 16,
+    "nombre": "Barras de Cereal x12",
+    "descripcion": "Snack rápido para antes o después de entrenar.",
+    "imagen": "",
+    "precioEnPuntos": 950,
+    "categoriaId": 2,
+    "stock": 60
+  },
+  {
+    "id": 17,
+    "nombre": "Frutos Secos Mix 300g",
+    "descripcion": "Mezcla de almendras, nueces y pasas de uva.",
+    "imagen": "",
+    "precioEnPuntos": 1600,
+    "categoriaId": 2,
+    "stock": 35,
+    "destacado": true
+  },
+  {
+    "id": 18,
+    "nombre": "Agua Saborizada Pack x6",
+    "descripcion": "Sin azúcar, distintos sabores.",
+    "imagen": "/assets/img/agua-saborizada.jpg",
+    "precioEnPuntos": 1100,
+    "categoriaId": 3,
+    "stock": 50
+  },
+  {
+    "id": 19,
+    "nombre": "Bebida Isotónica 750ml",
+    "descripcion": "Repone electrolitos después del entrenamiento.",
+    "imagen": "",
+    "precioEnPuntos": 900,
+    "categoriaId": 3,
+    "stock": 55,
+    "destacado": true
+  },
+  {
+    "id": 20,
+    "nombre": "Café en Grano 1kg",
+    "descripcion": "Tueste medio, ideal para cafetera de filtro.",
+    "imagen": "/assets/img/cafe-grano.jpg",
+    "precioEnPuntos": 3400,
+    "categoriaId": 3,
+    "stock": 25
+  },
+  {
+    "id": 21,
+    "nombre": "Proteína Whey 1kg",
+    "descripcion": "Sabor chocolate, 24g de proteína por porción.",
+    "imagen": "",
+    "precioEnPuntos": 8900,
+    "categoriaId": 7,
+    "stock": 22,
+    "destacado": true
+  },
+  {
+    "id": 22,
+    "nombre": "Creatina 300g",
+    "descripcion": "Monohidrato micronizado sin sabor.",
+    "imagen": "/assets/img/creatina.jpg",
+    "precioEnPuntos": 5200,
+    "categoriaId": 7,
+    "stock": 28
+  },
+  {
+    "id": 23,
+    "nombre": "Campera Rompeviento",
+    "descripcion": "Liviana y plegable, ideal para llevar en la mochila.",
+    "imagen": "",
+    "precioEnPuntos": 6200,
+    "categoriaId": 4,
+    "stock": 15
+  },
+  {
+    "id": 24,
+    "nombre": "Buzo Canguro",
+    "descripcion": "Algodón felpado, bolsillo canguro frontal.",
+    "imagen": "/assets/img/buzo-canguro.jpg",
+    "precioEnPuntos": 4800,
+    "categoriaId": 4,
+    "stock": 22,
+    "destacado": true
+  },
+  {
+    "id": 25,
+    "nombre": "Zapatillas Casuales",
+    "descripcion": "Para el día a día, combinan con todo.",
+    "imagen": "",
+    "precioEnPuntos": 7200,
+    "categoriaId": 5,
+    "stock": 18
+  },
+  {
+    "id": 26,
+    "nombre": "Ojotas Deportivas",
+    "descripcion": "Suela con memoria, ideales para después de entrenar.",
+    "imagen": "/assets/img/ojotas-deportivas.jpg",
+    "precioEnPuntos": 1800,
+    "categoriaId": 5,
+    "stock": 45
+  },
+  {
+    "id": 27,
+    "nombre": "Gorra Ajustable",
+    "descripcion": "Protección solar con broche trasero ajustable.",
+    "imagen": "",
+    "precioEnPuntos": 1500,
+    "categoriaId": 6,
+    "stock": 60,
+    "destacado": true
   }
 ]

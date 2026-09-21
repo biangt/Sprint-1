@@ -16,11 +16,14 @@
 %>
 <%# Este boton queda reservado para texto. Si se necesita icono, se usa un %>
 <%# atomo dedicado y no se asume un icono por defecto para todos los botones. %>
+<%# disabled es opcional: cuando viene en true, deshabilita el boton
+    (por ejemplo, "Sin stock" en la pagina de producto). %>
 <button
   type="<%= typeof type !== 'undefined' ? type : 'button' %>"
   class="btn <%= (typeof variant !== 'undefined' && variant === 'secondary') ? 'btn--secondary' : 'btn--primary' %>"
   <%= typeof ariaLabel !== 'undefined' && ariaLabel ? 'aria-label="' + ariaLabel + '"' : '' %>
   <%= typeof title !== 'undefined' && title ? 'title="' + title + '"' : '' %>
+  <%= typeof disabled !== 'undefined' && disabled ? 'disabled' : '' %>
 >
   <%= text %>
 </button>

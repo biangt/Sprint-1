@@ -1,79 +1,84 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <title>ZEUS - Carrito</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/assets/css/styles.css" />
-</head>
-<body>
-  <%- include('../partials/organisms/header') %>
+<div class="cart-header">
+  <%# Escenario US#7: un boton que dirija a la pagina de inicio. %>
+  <a href="/">&larr; Volver al listado</a>
+  <h1>Productos en tu Carrito</h1>
+</div>
 
-  <div class="cart-header">
-    <%# Escenario US#7: un boton que dirija a la pagina de inicio. %>
-    <a href="/">&larr; Volver al listado</a>
-    <h1>Productos en tu Carrito</h1>
-  </div>
+<%# Aviso de "sin stock" que dejó guardado el controller cuando el
+    Agregar/+ no pudo hacerse porque ya se llegó al stock disponible. %>
+<% if (typeof mensaje !== 'undefined' && mensaje) { %>
+  <p class="cart-mensaje" role="alert"><%= mensaje %></p>
+<% } %>
 
-  <% if (items.length > 0) { %>
-    <%# <ul>/<li>: la lista de productos es semanticamente eso, una lista. %>
-    <ul class="cart-card">
-      <% items.forEach(function(item) { %>
-        <li class="cart-item">
-          <div class="cart-item__product">
-            <img class="cart-item__image" src="<%= item.imagen %>" alt="<%= item.nombre %>" />
-            <span><%= item.nombre %></span>
-          </div>
+<% if (items.length > 0) { %>
+  <%# <ul>/<li>: la lista de productos es semanticamente eso, una lista. %>
+  <ul class="cart-card">
+    <% items.forEach(function(item) { %>
+      <li class="cart-item">
+        <div class="cart-item__product">
+          <%# Mismo fallback que ya tienen productCard.ejs y product.ejs:
+              si "imagen" viene vacia, o si la ruta esta cargada pero el
+              archivo no existe (onerror), se muestra el placeholder en
+              vez de dejar el hueco de imagen rota. %>
+          <img
+            class="cart-item__image"
+            src="<%= (item.imagen && item.imagen.trim()) ? item.imagen : '/assets/img/placeholder-producto.png' %>"
+            alt="<%= item.nombre %>"
+            onerror="this.onerror=null; this.src='/assets/img/placeholder-producto.png';"
+          />
+          <span><%= item.nombre %></span>
+        </div>
 
-          <div class="cart-item__controls">
-            <%# Cada boton necesita su propio <form> apuntando a la ruta
-                correspondiente (US#4): sin esto, el boton no manda nada. %>
-            <form action="/cart/remove/<%= item.id %>" method="POST">
-              <button type="submit" class="cart-item__remove">Quitar</button>
+        <div class="cart-item__controls">
+          <%# Cada boton necesita su propio <form> apuntando a la ruta
+              correspondiente (US#4): sin esto, el boton no manda nada. %>
+          <form action="/cart/remove/<%= item.id %>" method="POST">
+            <button type="submit" class="cart-item__remove">Quitar</button>
+          </form>
+
+          <%# Grupo de cantidad: se marca con role="group" y aria-label para %>
+          <%# que un lector de pantalla anuncie que "menos", el numero y "mas" %>
+          <%# forman un unico control, no tres botones sueltos sin relacion. %>
+          <div class="cart-item__qty" role="group" aria-label="Cantidad de <%= item.nombre %>">
+            <form action="/cart/decrease/<%= item.id %>" method="POST">
+              <button type="submit" aria-label="Quitar una unidad de <%= item.nombre %>">&minus;</button>
             </form>
-
-            <%# Grupo de cantidad: se marca con role="group" y aria-label para %>
-            <%# que un lector de pantalla anuncie que "menos", el numero y "mas" %>
-            <%# forman un unico control, no tres botones sueltos sin relacion. %>
-            <div class="cart-item__qty" role="group" aria-label="Cantidad de <%= item.nombre %>">
-              <form action="/cart/decrease/<%= item.id %>" method="POST">
-                <button type="submit" aria-label="Quitar una unidad de <%= item.nombre %>">&minus;</button>
-              </form>
-              <span><%= item.cantidad %></span>
-              <form action="/cart/increase/<%= item.id %>" method="POST">
-                <button type="submit" aria-label="Agregar una unidad de <%= item.nombre %>">&plus;</button>
-              </form>
-            </div>
-
-            <span class="cart-item__price"><%= item.subtotal.toLocaleString('es-AR') %> pts</span>
+            <span><%= item.cantidad %></span>
+            <form action="/cart/increase/<%= item.id %>" method="POST">
+              <%# Si ya está en el tope del stock disponible, ni mostramos
+                  el boton habilitado: evita otro viaje al servidor solo
+                  para que rebote con el aviso de "sin stock". %>
+              <button
+                type="submit"
+                aria-label="Agregar una unidad de <%= item.nombre %>"
+                <%= item.cantidad >= item.stock ? 'disabled' : '' %>
+              >&plus;</button>
+            </form>
           </div>
-        </li>
-      <% }) %>
-    </ul>
 
-    <div class="cart-summary">
-      <%# Escenario 4 de la US#4: boton para vaciar el carrito entero. %>
-      <form action="/cart/clear" method="POST">
-        <button type="submit" class="btn btn--secondary">Vaciar carrito</button>
-      </form>
+          <span class="cart-item__price"><%= item.subtotal.toLocaleString('es-AR') %> pts</span>
+        </div>
+      </li>
+    <% }) %>
+  </ul>
 
-      <div class="cart-summary__total">
-        <span>Total de Puntos</span>
-        <strong><%= total.toLocaleString('es-AR') %></strong>
-      </div>
-      <%# Escenario US#7: un boton que dirija a la pagina de pago. %>
-      <a href="/checkout" class="btn btn--primary">Ir a Pagar</a>
+  <div class="cart-summary">
+    <%# Escenario 4 de la US#4: boton para vaciar el carrito entero. %>
+    <form action="/cart/clear" method="POST">
+      <button type="submit" class="btn btn--secondary">Vaciar carrito</button>
+    </form>
+
+    <div class="cart-summary__total">
+      <span>Total de Puntos</span>
+      <strong><%= total.toLocaleString('es-AR') %></strong>
     </div>
-  <% } else { %>
-    <%# Escenario 6 de la US#4: mensaje amigable + boton para volver al inicio. %>
-    <div class="cart-empty">
-      <p>Tu carrito está vacío.</p>
-      <a href="/" class="btn btn--primary">Volver al inicio</a>
-    </div>
-  <% } %>
-
-  <%- include('../partials/organisms/footer') %>
-</body>
-</html>
+    <%# Escenario US#7: un boton que dirija a la pagina de pago. %>
+    <a href="/checkout" class="btn btn--primary">Ir a Pagar</a>
+  </div>
+<% } else { %>
+  <%# Escenario 6 de la US#4: mensaje amigable + boton para volver al inicio. %>
+  <div class="cart-empty">
+    <p>Tu carrito está vacío.</p>
+    <a href="/" class="btn btn--primary">Volver al inicio</a>
+  </div>
+<% } %>

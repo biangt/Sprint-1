@@ -15,7 +15,9 @@
 %>
 <nav class="category-strip" aria-label="Categorías">
   <% categorias.forEach(function(categoria) { %>
-    <a href="/products?categoria=<%= categoria.slug %>" class="category-strip__item">
+    <%# US#10: antes apuntaba a /products?categoria=..., una ruta que nunca
+        se llegó a programar. Ahora enlaza a la página real de categoría. %>
+    <a href="/categories/<%= categoria.slug %>" class="category-strip__item">
       <%# La etiqueta con guion (sin signo igual) imprime el SVG SIN escapar
           las etiquetas HTML. Esto es seguro acá porque "icono" viene de
           nuestro propio archivo data/categorias.json (nosotros lo escribimos),

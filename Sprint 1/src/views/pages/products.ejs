@@ -1,0 +1,9 @@
+<div class="products-page__header">
+  <h1>Todos los productos</h1>
+  <%- include('../partials/molecules/sortFilter', { sortActual: sortActual }) %>
+</div>
+
+<%- include('../partials/organisms/productGrid', {
+  productos: productos,
+  vacioMensaje: 'No hay productos disponibles.'
+}) %>

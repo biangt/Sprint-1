@@ -1,14 +1,15 @@
 <%#
   Esta molecula combina el icono de carrito con un badge numerico.
-  cantidad es la cantidad de items en el carrito (viene de la vista).
-  Por ahora, si no se pasa "cantidad", no se muestra el badge.
+  cantidad es la cantidad de items en el carrito (viene de header.ejs,
+  que a su vez la toma de res.locals.cantidadCarrito, calculada en
+  app.js a partir de req.session.cart). US#12: el badge se muestra
+  SIEMPRE, incluso en 0 cuando el carrito esta vacio.
 %>
 <% const cartIcon = '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 4h2l1.6 9.6a2 2 0 0 0 2 1.7h7.6a2 2 0 0 0 2-1.6L19.6 8H6.2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9.5" cy="19.5" r="1.4" fill="currentColor"/><circle cx="16.5" cy="19.5" r="1.4" fill="currentColor"/></svg>' %>
-<a href="/cart" class="cart-button" aria-label="Ver carrito" title="Ver carrito">
+<% const cantidadMostrada = typeof cantidad !== 'undefined' ? cantidad : 0 %>
+<a href="/cart" class="cart-button" aria-label="Ver carrito (<%= cantidadMostrada %> productos)" title="Ver carrito">
   <span class="icon-btn icon-btn--primary">
     <span class="icon-btn__icon"><%- cartIcon %></span>
   </span>
-  <% if (typeof cantidad !== 'undefined' && cantidad > 0) { %>
-    <span class="cart-button__badge"><%= cantidad %></span>
-  <% } %>
+  <span class="cart-button__badge"><%= cantidadMostrada %></span>
 </a>

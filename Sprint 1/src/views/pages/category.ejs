@@ -1,0 +1,15 @@
+<%# US#10: esta vista no tiene diseño propio en Figma, asi que reutiliza
+    piezas que ya existen: la miga de pan de product.ejs y el mismo
+    productGrid (con titulo + mensaje vacio) que arma las secciones de
+    la Home y "Productos relacionados". %>
+<nav class="breadcrumb" aria-label="Miga de pan">
+  <a href="/">&larr; Volver al inicio</a>
+  <span aria-hidden="true">&rsaquo;</span>
+  <span><%= categoria.nombre %></span>
+</nav>
+
+<%- include('../partials/organisms/productGrid', {
+  productos: productos,
+  titulo: categoria.nombre,
+  vacioMensaje: 'Todavía no hay productos en esta categoría.'
+}) %>

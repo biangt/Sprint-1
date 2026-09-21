@@ -1,0 +1,23 @@
+<%# US#18: cada "botón" es en realidad un <a> que apunta a /products con
+    el mismo query string (?sort=asc / ?sort=desc) que alguien podría
+    escribir a mano en la barra de direcciones. No hay JavaScript ni
+    lógica separada para el click: el navegador simplemente navega a esa
+    URL, y showProducts (productController.js) la procesa igual sea cual
+    sea el origen del pedido. "sortActual" (o "asc"/"desc"/null) marca
+    cuál está aplicado ahora mismo, para resaltarlo. %>
+<div class="sort-filter" role="group" aria-label="Ordenar por precio">
+  <span class="sort-filter__label">Ordenar por precio:</span>
+  <a
+    href="/products?sort=asc"
+    class="sort-filter__btn <%= sortActual === 'asc' ? 'sort-filter__btn--active' : '' %>"
+    aria-pressed="<%= sortActual === 'asc' ? 'true' : 'false' %>"
+  >Menor a mayor</a>
+  <a
+    href="/products?sort=desc"
+    class="sort-filter__btn <%= sortActual === 'desc' ? 'sort-filter__btn--active' : '' %>"
+    aria-pressed="<%= sortActual === 'desc' ? 'true' : 'false' %>"
+  >Mayor a menor</a>
+  <% if (sortActual) { %>
+    <a href="/products" class="sort-filter__clear">Quitar orden</a>
+  <% } %>
+</div>

@@ -1,8 +1,23 @@
 <%# Este organismo muestra una coleccion de productos en forma de cuadricula. %>
 <%# <section> agrupa semanticamente el contenido relacionado de la cuadricula. %>
-<section class="product-grid">
-  <%# productos es el arreglo de datos recibido por esta plantilla. %>
-  <% productos.forEach(function(producto) { %>
-    <%- include('../molecules/productCard', { producto: producto }) %>
-  <% }) %>
+<section class="product-section">
+  <%# titulo es opcional: si no se pasa, la grilla se muestra sin encabezado. %>
+  <% if (typeof titulo !== 'undefined' && titulo) { %>
+    <h2 class="product-section__title"><%= titulo %></h2>
+  <% } %>
+
+  <%# US#8 (Escenario 3): cuando la lista viene vacia (por ejemplo, sin
+      productos relacionados), se muestra "vacioMensaje" en vez de una
+      grilla vacia. Es opcional: si no se pasa, simplemente no se muestra
+      nada cuando productos.length es 0. %>
+  <% if (productos.length > 0) { %>
+    <div class="product-grid">
+      <%# productos es el arreglo de datos recibido por esta plantilla. %>
+      <% productos.forEach(function(producto) { %>
+        <%- include('../molecules/productCard', { producto: producto }) %>
+      <% }) %>
+    </div>
+  <% } else if (typeof vacioMensaje !== 'undefined' && vacioMensaje) { %>
+    <p class="product-section__empty"><%= vacioMensaje %></p>
+  <% } %>
 </section>

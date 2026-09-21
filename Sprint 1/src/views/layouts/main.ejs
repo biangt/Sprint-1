@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title><%= typeof titulo !== 'undefined' && titulo ? titulo : 'ZEUS' %></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+</head>
+<body>
+  <%- include('../partials/organisms/header') %>
+
+  <%# US#14: layout base. Cada controller manda "page" (el nombre del
+      archivo dentro de views/pages/) y sus propios datos; este include
+      dinamico mete esa vista puntual justo en el medio, entre el header y
+      el footer, que a partir de ahora viven UNA sola vez acá en vez de
+      estar copiados y pegados en cada .ejs. "locals" son todas las
+      variables que el controller le pasó a render(), se las reenviamos
+      tal cual a la vista interna. %>
+  <%- include('../pages/' + page, locals) %>
+
+  <%- include('../partials/organisms/footer') %>
+</body>
+</html>

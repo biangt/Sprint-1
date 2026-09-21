@@ -1,0 +1,13 @@
+<div class="products-page__header">
+  <%# US#19 (Escenario "si no hay resultados, se muestra un mensaje"):
+      esto es sobre el TITULO. El mensaje de "no encontramos nada" en si
+      lo muestra productGrid, via vacioMensaje, mas abajo. %>
+  <h1><%= term ? `Resultados para "${term}"` : 'Todos los productos' %></h1>
+</div>
+
+<%- include('../partials/organisms/productGrid', {
+  productos: productos,
+  vacioMensaje: term
+    ? `No encontramos productos que coincidan con "${term}".`
+    : 'No hay productos disponibles.'
+}) %>

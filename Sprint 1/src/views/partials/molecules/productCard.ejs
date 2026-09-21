@@ -2,7 +2,16 @@
 <%# href construye la ruta usando el id unico del objeto producto. %>
 <%# El id del producto se lee de producto.id y se inserta escapado en el HTML. %>
 <a href="/products/<%= producto.id %>" class="product-card">
-  <img src="<%= (producto.imagen && producto.imagen.trim()) ? producto.imagen : '/assets/img/placeholder-producto.png' %>" alt="<%= producto.nombre %>" />
+  <%# El check de producto.imagen cubre el caso "no tiene foto en el JSON",
+      pero no alcanza si la ruta SI esta cargada pero el archivo no existe
+      (justo lo que pasa con varios productos de este catalogo): ahi el
+      <img> rompe visualmente la tarjeta cuadrada. El onerror cubre ese
+      segundo caso, cambiando al placeholder si la imagen falla al cargar. %>
+  <img
+    src="<%= (producto.imagen && producto.imagen.trim()) ? producto.imagen : '/assets/img/placeholder-producto.png' %>"
+    alt="<%= producto.nombre %>"
+    onerror="this.onerror=null; this.src='/assets/img/placeholder-producto.png';"
+  />
   <div class="product-card__body">
     <h3 class="product-card__title"><%= producto.nombre %></h3>
   <%# Se incluye el atomo price y se le pasa el precio expresado en puntos. producto.precioEnPuntos obtiene esa propiedad del objeto producto. %>

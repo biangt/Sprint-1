@@ -1,0 +1,21 @@
+<main class="server-error">
+  <%# A diferencia de zeus404.jpg (una imagen ancha tipo banner),
+      ZEUStristeof.png es una imagen chica y transparente, por eso
+      no usa el mismo tratamiento object-fit:cover que el 404. %>
+  <img
+    src="/assets/img/ZEUStristeof.png"
+    alt="Perro triste, símbolo de que algo salió mal en el servidor"
+    class="server-error__image"
+  />
+
+  <section class="server-error__actions">
+    <h1>¡Uy, algo salió mal!</h1>
+    <%# No mostramos err.message ni err.stack: esa info es para el
+        servidor (console.error en app.js), nunca para quien navega. %>
+    <p>Tuvimos un problema de nuestro lado. Ya lo estamos revisando, probá de nuevo en unos minutos.</p>
+    <div class="server-error__buttons">
+      <a href="/" class="btn btn--primary">Volver al inicio</a>
+      <a href="/products" class="btn btn--secondary">Ver productos</a>
+    </div>
+  </section>
+</main>

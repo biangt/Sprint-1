@@ -1,36 +1,21 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <title>ZEUS - Inicio</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/assets/css/styles.css" />
-</head>
-<body>
-  <%- include('../partials/organisms/header') %>
+<%- include('../partials/organisms/categoryStrip', { categorias: categorias }) %>
 
-  <%- include('../partials/organisms/categoryStrip', { categorias: categorias }) %>
+<%- include('../partials/organisms/promoBanner') %>
 
-  <%- include('../partials/organisms/promoBanner') %>
+<%# US#6: "sugeridos" son hasta 5 productos elegidos al azar por el
+    controller (productController.showHome), y "masPedidos" es el resto
+    del catálogo, sin repetir los que ya se muestran arriba. %>
+<main>
+  <%- include('../partials/organisms/productGrid', { productos: sugeridos, titulo: 'Te puede interesar' }) %>
+  <%- include('../partials/organisms/productGrid', { productos: masPedidos, titulo: 'Los más pedidos' }) %>
 
-  <%
-    /* Mientras no haya un criterio real (recomendaciones, ventas, etc.),
-       partimos el mismo arreglo "productos" en dos grupos para las dos
-       secciones del home: los primeros 4 para "Te puede interesar"
-       y el resto para "Los más pedidos". */
-    const destacados = productos.slice(0, 4);
-    const masPedidos = productos.slice(4);
-  %>
+  <%# US#18: la Home solo muestra una selección (sugeridos + destacados),
+      nunca el catálogo entero. Este bloque es la puerta hacia /products,
+      donde vive el listado completo y el filtro de orden por precio. %>
+  <section class="view-all">
+    <p>¿Buscás algo puntual?</p>
+    <a href="/products" class="btn btn--primary">Ver todos los productos</a>
+  </section>
+</main>
 
-  <main>
-    <%- include('../partials/organisms/productGrid', { productos: destacados, titulo: 'Te puede interesar' }) %>
-    <%- include('../partials/organisms/productGrid', { productos: masPedidos, titulo: 'Los más pedidos' }) %>
-  </main>
-
-  <%- include('../partials/organisms/categoryStrip', { categorias: categorias }) %>
-
-  <%- include('../partials/organisms/footer') %>
-</body>
-</html>
+<%- include('../partials/organisms/categoryStrip', { categorias: categorias }) %>
