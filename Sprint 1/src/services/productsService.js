@@ -2,11 +2,17 @@ const productModel = require('../models/productModel');
 const categoryModel = require('../models/categoryModel');
 
 // US#15: acá vive la lógica de "qué productos corresponden" para cada
-// pantalla. Los controllers ya no arman esto ellos mismos: le piden al
+// pantalla. Los controllers no arman esto ellos mismos: le piden al
 // service el resultado ya listo y solo deciden cómo responder (renderizar
-// o redirigir). Si en el Sprint 3 productModel/categoryModel pasan a leer
-// de una base de datos en vez del JSON, este archivo no debería tener que
-// cambiar nada: sigue pidiéndoles lo mismo.
+// o redirigir).
+//
+// US#main-s3-us3: productModel ahora lee de SQLite en vez del JSON, pero
+// este archivo no tuvo que cambiar su forma de pedirle los datos —
+// getAll/getById/etc. siguen llamándose igual y devolviendo los mismos
+// objetos. Lo único que cambió acá es "ordenar" y "buscar", que antes se
+// resolvían con .sort()/.filter() en JS después de traer TODO el
+// catálogo, y ahora se lo delegamos directamente a SQL (getAllOrdenado /
+// buscarPorNombre), que es quien mejor sabe hacerlo.
 
 // Datos que necesita la Home: "Te puede interesar" (aleatorios) y
 // "Los más pedidos" (destacados, sin repetir los que ya salieron arriba).
@@ -41,33 +47,20 @@ function getCategoryProducts(slug) {
 // US#18: TODOS los productos del catálogo, opcionalmente ordenados por
 // precio. "sortParam" es lo que venga en req.query.sort (un string
 // cualquiera, o undefined) — acá se valida: si no es exactamente "asc" o
-// "desc" se ignora y se devuelve el catálogo sin ordenar, en vez de
-// romper con un valor raro tipo ?sort=banana. Se ordena una COPIA del
-// arreglo (.slice()), nunca el original de productModel.
+// "desc" se ignora, en vez de romper con un valor raro tipo ?sort=banana.
 function getProductsList(sortParam) {
   const sort = sortParam === 'asc' || sortParam === 'desc' ? sortParam : null;
-  const productos = productModel.getAll().slice();
-
-  if (sort === 'asc') {
-    productos.sort((a, b) => a.precioEnPuntos - b.precioEnPuntos);
-  } else if (sort === 'desc') {
-    productos.sort((a, b) => b.precioEnPuntos - a.precioEnPuntos);
-  }
-
+  const productos = productModel.getAllOrdenado(sort);
   return { productos, sort };
 }
 
 // US#19: filtra el catálogo por coincidencia PARCIAL de nombre (no hace
-// falta escribir el nombre completo ni con las mayúsculas exactas: "camis"
-// encuentra "Camiseta"). Si no llega texto (o es solo espacios), se
-// considera que no hay búsqueda y se devuelve el catálogo entero, igual
-// que /products sin filtros.
+// falta escribir el nombre completo). Si no llega texto (o es solo
+// espacios), se considera que no hay búsqueda y se devuelve el catálogo
+// entero, igual que /products sin filtros.
 function searchProducts(query) {
-  const term = (query || '').trim().toLowerCase();
-  const productos = productModel
-    .getAll()
-    .filter((producto) => term === '' || producto.nombre.toLowerCase().includes(term));
-
+  const term = (query || '').trim();
+  const productos = term === '' ? productModel.getAll() : productModel.buscarPorNombre(term);
   return { productos, term };
 }
 

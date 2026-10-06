@@ -7,6 +7,7 @@ const productRoutes = require('./src/routes/productRoute');
 const pageRoutes = require('./src/routes/pageRoute');
 const cartRoutes = require('./src/routes/cartRoute');
 const categoryRoutes = require('./src/routes/categoryRoute');
+require('./db/database');
 
 const app = express();
 const PORT = 3002;
