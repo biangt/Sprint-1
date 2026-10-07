@@ -2,10 +2,10 @@
 <%# tal como aparece en el diseño de Figma (fondo oscuro, en fila). %>
 <%# categorias es el arreglo recibido desde la vista que incluye este partial. %>
 <%
-  /* El SVG de cada ícono ahora es un ATRIBUTO más de cada categoría
-     (campo "icono" en data/categorias.json), no algo hardcodeado acá.
-     Así, agregar una categoría nueva con su propio ícono es solo agregar
-     el objeto al JSON: esta vista no necesita tocarse nunca más para eso.
+    /* El SVG de cada ícono es un ATRIBUTO más de cada categoría
+      (campo "icono" en la base de datos), no algo hardcodeado acá.
+      Así, agregar una categoría nueva con su propio ícono no requiere
+      modificar esta vista.
 
      ICONO_POR_DEFECTO es una red de seguridad: si algún día una categoría
      llega sin el campo "icono" (por ejemplo, alguien la agrega a mano y
@@ -20,7 +20,7 @@
     <a href="/categories/<%= categoria.slug %>" class="category-strip__item">
       <%# La etiqueta con guion (sin signo igual) imprime el SVG SIN escapar
           las etiquetas HTML. Esto es seguro acá porque "icono" viene de
-          nuestro propio archivo data/categorias.json (nosotros lo escribimos),
+          nuestra propia base de datos (administrada por el proyecto),
           nunca de algo que haya tipeado una persona usuaria. Si "icono"
           viniera de un formulario o de afuera, imprimirlo sin escapar sería
           un riesgo de seguridad (inyección de HTML/XSS) y habría que

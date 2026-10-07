@@ -1,6 +1,6 @@
 const db = require('../../db/database');
 
-// US#main-s3-us3: productModel ahora lee de SQLite en vez de productos.json.
+// US#main-s3-us3: productModel obtiene los productos directamente desde SQLite.
 // Todas las consultas piden las columnas con los MISMOS nombres que ya
 // devolvía el JSON (camelCase: precioEnPuntos, categoriaId), aunque en la
 // tabla estén guardadas distinto (precio_puntos, categoria_id en

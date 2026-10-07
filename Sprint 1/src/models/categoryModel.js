@@ -1,14 +1,14 @@
-const categorias = require('../../data/categorias.json');
+const db = require('../../db/database');
 
 function getAll() {
-  return categorias;
+  return db.prepare('SELECT id, nombre, slug, icono FROM categories ORDER BY id').all();
 }
 
 // US#10: busca una categoría por su slug (el texto que va en la URL,
 // ej. "calzado" en /categories/calzado). Devuelve undefined si no existe
 // ninguna con ese slug.
 function getBySlug(slug) {
-  return categorias.find((categoria) => categoria.slug === slug);
+  return db.prepare('SELECT id, nombre, slug, icono FROM categories WHERE slug = ?').get(slug);
 }
 
 module.exports = { getAll, getBySlug };

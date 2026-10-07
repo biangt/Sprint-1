@@ -57,7 +57,8 @@ function updateQuantity(session, productId, delta) {
 
   if (delta > 0) {
     const producto = productModel.getById(idNumerico);
-    if (producto && item.quantity + delta > producto.stock) return { ok: false, motivo: 'sin-stock' };
+    if (!producto) return { ok: false, motivo: 'no-existe' };
+    if (item.quantity + delta > producto.stock) return { ok: false, motivo: 'sin-stock' };
   }
 
   item.quantity += delta;

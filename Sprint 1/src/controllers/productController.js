@@ -1,5 +1,6 @@
 const productsService = require('../services/productsService');
 const normalizeId = require('../utils/normalizeId');
+const renderIdError = require('../utils/renderIdError');
 
 // US#15: el controller ya no arma "sugeridos"/"masPedidos" él mismo, se
 // los pide listos al service y solo decide cómo responder.
@@ -9,26 +10,16 @@ function showHome(req, res) {
 }
 
 function showProduct(req, res) {
-  // US#17: primero se valida que el id de la URL TENGA FORMATO de id
-  // (un número). Si alguien puso /products/abc, ni vale la pena
-  // preguntarle al service: es un pedido mal formado, 400. El status
-  // sigue siendo 400 (no 404), pero la pantalla reutiliza la misma vista
-  // "no encontrado" con un mensaje propio, en vez de un texto plano.
-  const id = normalizeId(req.params.id);
-  if (id === null) {
-    return res.status(400).render('layouts/main', {
-      page: 'notFound',
-      titulo: 'ZEUS - Solicitud inválida',
-      mensaje: '400 - El id del producto no es válido.',
-    });
-  }
+  // Valida tanto el formato del ID como la existencia del producto en SQLite.
+  const validacion = normalizeId(req.params.id);
+  if (validacion.status) return renderIdError(res, validacion.status);
 
-  const resultado = productsService.getProductDetail(id);
+  const resultado = productsService.getProductDetail(validacion.id);
 
   // Acá el id SÍ tiene formato válido, pero ningún producto lo tiene:
   // ahora es un 404 (no lo encontramos), no un 400.
   if (!resultado) {
-    return res.status(404).render('layouts/main', { page: 'notFound', titulo: 'ZEUS - Página no encontrada' });
+    return renderIdError(res, 404);
   }
 
   res.render('layouts/main', {
