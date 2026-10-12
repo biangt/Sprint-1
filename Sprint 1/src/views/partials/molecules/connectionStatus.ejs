@@ -1,0 +1,8 @@
+<%# US#2: indicador del estado de la conexión WebSocket. Arranca en
+    "Desconectado" (lo cierto hasta que el socket abre) y wsClient.js
+    cambia el data-estado y el texto cuando el socket abre o se cierra.
+    El color del punto lo decide el CSS según data-estado. %>
+<span id="estado-conexion" class="connection-status" data-estado="desconectado" role="status" aria-live="polite">
+  <span class="connection-status__dot"></span>
+  <span data-estado-texto>Desconectado</span>
+</span>

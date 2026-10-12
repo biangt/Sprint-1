@@ -345,6 +345,21 @@
     @apply flex items-center gap-4 shrink-0;
   }
 
+  /* Indicador de conexión en tiempo real (molecules/connectionStatus.ejs).
+     El color del punto depende de data-estado, que cambia wsClient.js. */
+  .connection-status {
+    @apply inline-flex items-center gap-2 text-sm text-dark;
+  }
+  .connection-status__dot {
+    @apply h-2.5 w-2.5 rounded-full bg-border;
+  }
+  .connection-status[data-estado="conectado"] .connection-status__dot {
+    @apply bg-primary;
+  }
+  .connection-status[data-estado="desconectado"] .connection-status__dot {
+    @apply bg-red-500;
+  }
+
   /* Franja de categorías (organisms/categoryStrip.ejs) */
   .category-strip {
     @apply mx-8 my-6 flex flex-wrap items-center justify-around gap-4

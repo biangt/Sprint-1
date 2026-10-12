@@ -6,6 +6,7 @@
     <%- include('../molecules/searchBar') %>
   </div>
   <div class="site-header__actions">
+    <%- include('../molecules/connectionStatus') %>
     <%- include('../molecules/cartButton', { cantidad: typeof cantidadCarrito !== 'undefined' ? cantidadCarrito : 0 }) %>
     <%- include('../molecules/userMenu', { nombre: typeof usuarioNombre !== 'undefined' ? usuarioNombre : 'Invitado' }) %>
   </div>

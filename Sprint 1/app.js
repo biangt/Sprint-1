@@ -1,6 +1,8 @@
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
+const http = require('http');
+const { initWebSocket } = require('./src/websocket/wsServer');
 const categoryModel = require('./src/models/categoryModel');
 const cartService = require('./src/services/cartService');
 const productRoutes = require('./src/routes/productRoute');
@@ -66,6 +68,10 @@ app.use((err, req, res, next) => {
   res.status(500).render('layouts/main', { page: '500', titulo: 'ZEUS - Error del servidor' });
 });
 
-app.listen(PORT, () => {
+//app.listen() crea un servidor HTTP internamente y no te lo devuelve de forma cómoda para engancharle algo más. Con http.createServer(app) pasamos a tener el servidor en una variable, server, y ese mismo server lo usan los dos: Express (rutas, vistas, carrito) y ws (WebSockets). Los dos comparten el puerto 3002.
+const server = http.createServer(app);
+initWebSocket(server);
+
+server.listen(PORT, () => {
   console.log(`ZEUS corriendo en http://localhost:${PORT}`);
 });
