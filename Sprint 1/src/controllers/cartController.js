@@ -4,6 +4,15 @@ const cartService = require('../services/cartService');
 const normalizeId = require('../utils/normalizeId');
 // Importa el helper que genera la respuesta HTTP adecuada para errores de ID.
 const renderIdError = require('../utils/renderIdError');
+const { broadcastToSession } = require('../websocket/wsServer');
+
+// Avisa a las pestañas de esta sesión cuál es la cantidad actual del carrito.
+function notificarCantidad(req) {
+  broadcastToSession(req.session.id, {
+    tipo: 'carrito:cantidad',
+    cantidad: cartService.getCantidad(req.session),
+  });
+}
 
 // Muestra el carrito combinando la sesión con los datos reales del
 // producto, y calcula el total (Escenario 2 y Escenario 5).
@@ -36,6 +45,9 @@ function addItem(req, res) {
     return res.render('layouts/main', { page: 'cart', titulo: 'ZEUS - Carrito', ...resumen, mensaje: cartService.mensajeDeError(resultado.motivo) });
   }
 
+    //Reutilizamos getCantidad, que es la misma función que usa el badge al renderizar, así el número siempre coincide con la sesión.
+  notificarCantidad(req);
+
   // Redirige al carrito después de agregar correctamente el producto.
   res.redirect('/cart');
 }
@@ -61,6 +73,9 @@ function increase(req, res) {
     return res.render('layouts/main', { page: 'cart', titulo: 'ZEUS - Carrito', ...resumen, mensaje: cartService.mensajeDeError(resultado.motivo) });
   }
 
+    //Reutilizamos getCantidad, que es la misma función que usa el badge al renderizar, así el número siempre coincide con la sesión.
+  notificarCantidad(req);
+
   // Redirige al carrito cuando el incremento se completó.
   res.redirect('/cart');
 }
@@ -75,6 +90,10 @@ function decrease(req, res) {
 
   // Solicita al servicio restar una unidad; el servicio quita el artículo si llega a cero.
   cartService.updateQuantity(req.session, validacion.id, -1);
+  
+  //Reutilizamos getCantidad, que es la misma función que usa el badge al renderizar, así el número siempre coincide con la sesión.
+  notificarCantidad(req);
+
   // Vuelve a mostrar el carrito actualizado.
   res.redirect('/cart');
 }
@@ -88,6 +107,10 @@ function removeItem(req, res) {
 
   // Pide al servicio eliminar por completo el producto validado de la sesión.
   cartService.removeItem(req.session, validacion.id);
+
+    //Reutilizamos getCantidad, que es la misma función que usa el badge al renderizar, así el número siempre coincide con la sesión.
+  notificarCantidad(req);
+
   // Redirige al carrito para mostrar el resultado actualizado.
   res.redirect('/cart');
 }
@@ -96,6 +119,10 @@ function removeItem(req, res) {
 function clear(req, res) {
   // Pide al servicio vaciar todos los artículos almacenados en el carrito de la sesión.
   cartService.clear(req.session);
+
+  //Reutilizamos getCantidad, que es la misma función que usa el badge al renderizar, así el número siempre coincide con la sesión.
+  notificarCantidad(req);
+
   // Regresa a la página del carrito, ahora vacío.
   res.redirect('/cart');
 }

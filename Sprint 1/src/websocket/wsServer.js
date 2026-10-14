@@ -11,13 +11,19 @@ const CODIGOS_CIERRE = {
 let wss = null;
 
 // Crea el servidor WebSocket sobre el servidor HTTP que ya usa Express.
-function initWebSocket(httpServer) {
+function initWebSocket(httpServer, sessionMiddleware) {
   wss = new WebSocketServer({ server: httpServer });
 
   // "connection" se dispara cada vez que un navegador completa el handshake
-  wss.on('connection', (socket) => {
-    console.log(`[WS] Cliente conectado. Activos: ${wss.clients.size}`);
 
+  wss.on('connection', (socket, req) => {
+    // Corremos el middleware de sesión sobre el request del handshake
+    // para leer la cookie y saber de qué sesión es este socket.
+    sessionMiddleware(req, {}, () => {
+      socket.sessionId = req.session ? req.session.id : null;
+      console.log(`[WS] Cliente conectado (sesión ${socket.sessionId}). Activos: ${wss.clients.size}`);
+    });
+    
     socket.on('close', (code, reason) => {
         const significado = CODIGOS_CIERRE[code] || 'Código no catalogado';
         const motivo = reason.toString() || 'sin motivo';
@@ -37,4 +43,18 @@ function getClients() {
   return wss ? wss.clients : new Set();
 }
 
-module.exports = { initWebSocket, getClients };
+// Envía un mensaje SOLO a los sockets que pertenecen a esa sesión
+// (las pestañas de la misma persona).
+//Chequeamos readyState === OPEN porque send() sobre un socket cerrado da error.
+function broadcastToSession(sessionId, mensaje) {
+  if (!wss) return;
+  const texto = JSON.stringify(mensaje);
+  wss.clients.forEach((client) => {
+    if (client.readyState === WebSocket.OPEN && client.sessionId === sessionId) {
+      client.send(texto);
+    }
+  });
+}
+
+
+module.exports = { initWebSocket, getClients, broadcastToSession };

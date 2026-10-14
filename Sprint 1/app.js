@@ -20,11 +20,12 @@ app.set('views', path.join(__dirname, 'src', 'views'));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.use(express.urlencoded({ extended: true }));
 
-app.use(session({
-  secret: 'zeus-carrito-sprint2', // cualquier texto, sirve para firmar la cookie de sesión
-  resave: false,                  // no reescribe la sesión en el servidor si no cambió nada
-  saveUninitialized: true         // crea una sesión (y su cookie) aunque todavía no se haya guardado nada en ella
-}));
+const sessionMiddleware = session({
+  secret: 'zeus-carrito-sprint2',// cualquier texto, sirve para firmar la cookie de sesión
+  resave: false,// no reescribe la sesión en el servidor si no cambió nada
+  saveUninitialized: true // crea una sesión (y su cookie) aunque todavía no se haya guardado nada en ella
+});
+app.use(sessionMiddleware);
 
 // Garantiza que req.session.cart siempre exista (un array, aunque esté
 // vacío) antes de llegar a cualquier controller, para no tener que andar
@@ -70,7 +71,7 @@ app.use((err, req, res, next) => {
 
 //app.listen() crea un servidor HTTP internamente y no te lo devuelve de forma cómoda para engancharle algo más. Con http.createServer(app) pasamos a tener el servidor en una variable, server, y ese mismo server lo usan los dos: Express (rutas, vistas, carrito) y ws (WebSockets). Los dos comparten el puerto 3002.
 const server = http.createServer(app);
-initWebSocket(server);
+initWebSocket(server, sessionMiddleware);
 
 server.listen(PORT, () => {
   console.log(`ZEUS corriendo en http://localhost:${PORT}`);
