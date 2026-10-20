@@ -10,6 +10,17 @@
   <p class="cart-mensaje" role="alert"><%= mensaje %></p>
 <% } %>
 
+<%# US#7: aviso de una sola vez que dejó el controller en la sesión cuando
+    ESTA pestaña vació el carrito (el redirect recargó la página y el aviso
+    en vivo del WebSocket se perdió). Es solo un marcador oculto:
+    notificaciones.js lo lee y muestra el mismo aviso visual de siempre. %>
+<% if (typeof aviso !== 'undefined' && aviso) { %>
+  <div hidden data-aviso="<%= aviso.type %>" data-motivo="<%= aviso.payload.reason %>"></div>
+<% } %>
+
+<%# US#4 (Sprint 4): todo lo que cambia en tiempo real vive dentro de
+    este contenedor; cartLive.js lo reemplaza cuando llega un cambio. %>
+<div id="cart-contenido">
 <% if (items.length > 0) { %>
   <%# <ul>/<li>: la lista de productos es semanticamente eso, una lista. %>
   <ul class="cart-card">
@@ -82,3 +93,4 @@
     <a href="/" class="btn btn--primary">Volver al inicio</a>
   </div>
 <% } %>
+</div>

@@ -3,6 +3,9 @@ const session = require('express-session');
 const path = require('path');
 const http = require('http');
 const { initWebSocket } = require('./src/websocket/wsServer');
+// US#9: todo lo que se envía por WebSocket pasa por este servicio.
+const eventService = require('./src/services/eventService');
+const { eventoCarritoActualizado } = require('./src/websocket/cartEvents');
 const categoryModel = require('./src/models/categoryModel');
 const cartService = require('./src/services/cartService');
 const productRoutes = require('./src/routes/productRoute');
@@ -71,7 +74,12 @@ app.use((err, req, res, next) => {
 
 //app.listen() crea un servidor HTTP internamente y no te lo devuelve de forma cómoda para engancharle algo más. Con http.createServer(app) pasamos a tener el servidor en una variable, server, y ese mismo server lo usan los dos: Express (rutas, vistas, carrito) y ws (WebSockets). Los dos comparten el puerto 3002.
 const server = http.createServer(app);
-initWebSocket(server, sessionMiddleware);
+// US#5: apenas una pestaña se conecta, le mandamos el estado ACTUAL del
+// carrito. US#6: es el evento "cartUpdated" con source: 'connection', que le
+// avisa al navegador que no es un cambio sino que se está poniendo al día.
+initWebSocket(server, sessionMiddleware, (socket, session) => {
+  eventService.emitirA(socket, eventoCarritoActualizado(session, 'connection'));
+});
 
 server.listen(PORT, () => {
   console.log(`ZEUS corriendo en http://localhost:${PORT}`);

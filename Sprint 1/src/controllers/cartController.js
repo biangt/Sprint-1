@@ -4,14 +4,32 @@ const cartService = require('../services/cartService');
 const normalizeId = require('../utils/normalizeId');
 // Importa el helper que genera la respuesta HTTP adecuada para errores de ID.
 const renderIdError = require('../utils/renderIdError');
-const { broadcastToSession } = require('../websocket/wsServer');
+// US#9: el controlador solo habla con el servicio de eventos; nunca toca sockets.
+const eventService = require('../services/eventService');
+const { eventoCarritoActualizado, eventoCarritoVacio } = require('../websocket/cartEvents');
 
-// Avisa a las pestañas de esta sesión cuál es la cantidad actual del carrito.
-function notificarCantidad(req) {
-  broadcastToSession(req.session.id, {
-    tipo: 'carrito:cantidad',
-    cantidad: cartService.getCantidad(req.session),
-  });
+// Avisa a las pestañas de esta sesión cómo quedó el carrito, con el evento
+// "cartUpdated" ({ type, payload }). Cómo se arma ese mensaje lo decide
+// cartEvents.js, el mismo módulo que usa el servidor cuando una pestaña
+// recién se conecta.
+//
+// US#7: cantidadAntes es cuántas unidades había ANTES de la operación; solo
+// hace falta en las operaciones que pueden dejar el carrito vacío. Si había
+// productos y ahora no hay ninguno, además se manda el evento "cartEmpty".
+// motivo dice cómo se vació (ver eventoCarritoVacio en cartEvents.js).
+function notificarCarrito(req, cantidadAntes = 0, motivo = 'lastItemRemoved') {
+  eventService.emitirASesion(req.session.id, eventoCarritoActualizado(req.session, 'change'));
+
+  const quedoVacio = cantidadAntes > 0 && cartService.getCantidad(req.session) === 0;
+  if (quedoVacio) {
+    const aviso = eventoCarritoVacio(motivo);
+    // Las otras pestañas lo reciben ahora por el WebSocket...
+    eventService.emitirASesion(req.session.id, aviso);
+    // ...pero la pestaña que hizo la acción se va a recargar por el redirect
+    // y perdería el aviso. Lo dejamos en la sesión para mostrarlo una vez en
+    // la próxima carga de /cart (ver showCart).
+    req.session.aviso = aviso;
+  }
 }
 
 // Muestra el carrito combinando la sesión con los datos reales del
@@ -19,8 +37,12 @@ function notificarCantidad(req) {
 function showCart(req, res) {
   // Construye los artículos del carrito con los datos actuales de la base y calcula sus subtotales y total.
   const resumen = cartService.getSummary(req.session);
+  // US#7: aviso "de una sola vez" que dejó notificarCarrito. Se lee y se
+  // borra de la sesión para que se muestre una única vez, no en cada recarga.
+  const aviso = req.session.aviso || null;
+  delete req.session.aviso;
   // Renderiza la página principal usando la vista del carrito y los datos calculados.
-  res.render('layouts/main', { page: 'cart', titulo: 'ZEUS - Carrito', ...resumen });
+  res.render('layouts/main', { page: 'cart', titulo: 'ZEUS - Carrito', ...resumen, aviso });
 }
 
 // Agrega un producto al carrito (Escenario 1). Si no hay stock suficiente,
@@ -46,7 +68,7 @@ function addItem(req, res) {
   }
 
     //Reutilizamos getCantidad, que es la misma función que usa el badge al renderizar, así el número siempre coincide con la sesión.
-  notificarCantidad(req);
+  notificarCarrito(req);
 
   // Redirige al carrito después de agregar correctamente el producto.
   res.redirect('/cart');
@@ -74,7 +96,7 @@ function increase(req, res) {
   }
 
     //Reutilizamos getCantidad, que es la misma función que usa el badge al renderizar, así el número siempre coincide con la sesión.
-  notificarCantidad(req);
+  notificarCarrito(req);
 
   // Redirige al carrito cuando el incremento se completó.
   res.redirect('/cart');
@@ -88,11 +110,14 @@ function decrease(req, res) {
   // Si el ID no es válido o no corresponde a un producto, responde con el error correspondiente.
   if (validacion.status) return renderIdError(res, validacion.status);
 
+  // US#7: anotamos cuántas unidades había ANTES, para saber si esta operación vació el carrito.
+  const cantidadAntes = cartService.getCantidad(req.session);
+
   // Solicita al servicio restar una unidad; el servicio quita el artículo si llega a cero.
   cartService.updateQuantity(req.session, validacion.id, -1);
   
   //Reutilizamos getCantidad, que es la misma función que usa el badge al renderizar, así el número siempre coincide con la sesión.
-  notificarCantidad(req);
+  notificarCarrito(req, cantidadAntes);
 
   // Vuelve a mostrar el carrito actualizado.
   res.redirect('/cart');
@@ -105,11 +130,14 @@ function removeItem(req, res) {
   // Evita modificar la sesión si el ID es inválido o el producto no existe.
   if (validacion.status) return renderIdError(res, validacion.status);
 
+  // US#7: anotamos cuántas unidades había ANTES, para saber si esta operación vació el carrito.
+  const cantidadAntes = cartService.getCantidad(req.session);
+
   // Pide al servicio eliminar por completo el producto validado de la sesión.
   cartService.removeItem(req.session, validacion.id);
 
     //Reutilizamos getCantidad, que es la misma función que usa el badge al renderizar, así el número siempre coincide con la sesión.
-  notificarCantidad(req);
+  notificarCarrito(req, cantidadAntes);
 
   // Redirige al carrito para mostrar el resultado actualizado.
   res.redirect('/cart');
@@ -117,11 +145,14 @@ function removeItem(req, res) {
 
 // Vacía el carrito entero (Escenario 4).
 function clear(req, res) {
+  // US#7: anotamos cuántas unidades había ANTES, para saber si esta operación vació el carrito.
+  const cantidadAntes = cartService.getCantidad(req.session);
+
   // Pide al servicio vaciar todos los artículos almacenados en el carrito de la sesión.
   cartService.clear(req.session);
 
   //Reutilizamos getCantidad, que es la misma función que usa el badge al renderizar, así el número siempre coincide con la sesión.
-  notificarCantidad(req);
+  notificarCarrito(req, cantidadAntes, 'cleared');
 
   // Regresa a la página del carrito, ahora vacío.
   res.redirect('/cart');

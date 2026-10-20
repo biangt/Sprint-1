@@ -359,6 +359,25 @@
   .connection-status[data-estado="desconectado"] .connection-status__dot {
     @apply bg-red-500;
   }
+  /* US#8: mientras se intenta reconectar, punto ámbar que parpadea */
+  .connection-status[data-estado="reconectando"] .connection-status__dot {
+    @apply bg-amber-400 animate-pulse;
+  }
+
+  /* Avisos temporales (assets/js/notificaciones.js). El script los agrega
+     y los quita solo; .toast--saliendo arranca el desvanecimiento.
+     pointer-events-none en el contenedor: así no tapa los clics de lo que
+     queda debajo (por ejemplo el botón del carrito del header). */
+  .toast-container {
+    @apply fixed top-4 right-4 z-50 flex flex-col gap-2 pointer-events-none;
+  }
+  .toast {
+    @apply rounded-md bg-dark px-4 py-3 text-sm text-white shadow-menu
+           transition-opacity duration-300;
+  }
+  .toast--saliendo {
+    @apply opacity-0;
+  }
 
   /* Franja de categorías (organisms/categoryStrip.ejs) */
   .category-strip {
