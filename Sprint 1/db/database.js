@@ -30,6 +30,16 @@ const schema = fs.readFileSync(schemaPath, 'utf8');
 //    las siguientes veces no hace nada porque ya existen.
 db.exec(schema);
 
+// Sprint 6 US#1: migración de la tabla users.
+// "CREATE TABLE IF NOT EXISTS" no modifica una tabla que ya existe. Si tu
+// database.sqlite ya tenía "users" de antes (sin la columna "role"), la
+// agregamos acá una sola vez. pragma('table_info') devuelve la lista de
+// columnas de la tabla: si "role" no está, hacemos el ALTER TABLE.
+const columnasUsers = db.pragma('table_info(users)').map((col) => col.name);
+if (!columnasUsers.includes('role')) {
+  db.exec("ALTER TABLE users ADD COLUMN role TEXT NOT NULL DEFAULT 'consumer'");
+}
+
 // 6. (Opcional pero recomendado) Activamos el chequeo de foreign keys.
 //    SQLite las trae desactivadas por defecto; sin esta línea, las relaciones
 //    definidas en schema.sql (por ejemplo products -> categories) no se

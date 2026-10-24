@@ -17,6 +17,10 @@
   <section class="auth-hero">
     <form action="/register" method="POST" class="auth-form">
       <h1>¡Regístrate!</h1>
+      <%# Sprint 6: mensaje de error que viene del servidor (email repetido, etc.) %>
+      <% if (typeof error !== 'undefined' && error) { %>
+        <p role="alert" class="text-red-600"><%= error %></p>
+      <% } %>
       <%- include('../partials/molecules/formGroup', { type: 'text', name: 'nombre', label: 'Nombre', required: true }) %>
       <%- include('../partials/molecules/formGroup', { type: 'email', name: 'email', label: 'Email', required: true }) %>
       <%- include('../partials/molecules/formGroup', { type: 'password', name: 'password', label: 'Contraseña', required: true }) %>

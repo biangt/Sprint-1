@@ -1,3 +1,6 @@
+// Sprint 6: carga las variables del archivo .env (claves secretas) en process.env.
+// Tiene que ser lo PRIMERO que se ejecuta, antes de leer cualquier variable.
+require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
 const cors = require('cors');
