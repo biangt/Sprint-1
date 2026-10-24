@@ -1,5 +1,6 @@
 const express = require('express');
 const session = require('express-session');
+const cors = require('cors');
 const path = require('path');
 const http = require('http');
 const { initWebSocket } = require('./src/websocket/wsServer');
@@ -12,6 +13,8 @@ const productRoutes = require('./src/routes/productRoute');
 const pageRoutes = require('./src/routes/pageRoute');
 const cartRoutes = require('./src/routes/cartRoute');
 const categoryRoutes = require('./src/routes/categoryRoute');
+// Sprint 5 US#1: todas las rutas JSON de la API viven bajo /api
+const apiRoutes = require('./src/routes/apiRoutes');
 require('./db/database');
 
 const app = express();
@@ -22,6 +25,15 @@ app.set('views', path.join(__dirname, 'src', 'views'));
 
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.use(express.urlencoded({ extended: true }));
+
+// Sprint 5 US#1: middlewares para la API.
+// cors(): agrega los headers que le dicen al navegador "este servidor acepta
+// pedidos de otros orígenes" (por ejemplo, un dashboard React en otro puerto).
+// Sin esto el navegador bloquea la respuesta aunque el servidor la envíe.
+app.use(cors());
+// express.json(): lee el body de pedidos con Content-Type application/json
+// y lo deja ya convertido en objeto en req.body (para POST y PUT).
+app.use(express.json());
 
 const sessionMiddleware = session({
   secret: 'zeus-carrito-sprint2',// cualquier texto, sirve para firmar la cookie de sesión
@@ -51,7 +63,19 @@ app.use((req, res, next) => {
   next();
 });
 
-app.locals.categorias = categoryModel.getAll();
+// La API va ANTES de las rutas de vistas (EJS) y antes del 404 de más abajo.
+app.use('/api', apiRoutes);
+
+// Sprint 5 US#3: antes las categorías se leían UNA vez al arrancar el
+// servidor (app.locals). Como ahora la API puede crear, renombrar o borrar
+// categorías, se leen en cada pedido de una página para que la franja de
+// categorías siempre muestre lo que hay en la base. Va después de /api para
+// no hacer esta consulta en los pedidos JSON.
+app.use((req, res, next) => {
+  res.locals.categorias = categoryModel.getAll();
+  next();
+});
+
 app.use('/', pageRoutes);
 app.use('/', productRoutes);
 app.use('/', cartRoutes);
@@ -69,6 +93,15 @@ app.use((req, res) => {
 // internos del código, así que 500.ejs solo muestra un mensaje genérico.
 app.use((err, req, res, next) => {
   console.error(err);
+  // Sprint 5: si el error ocurrió en la API (/api/...) se responde JSON, no
+  // una página. Un JSON mal escrito en el body hace que express.json()
+  // falle con err.status = 400; cualquier otro error es un 500.
+  if (req.originalUrl.startsWith('/api')) {
+    const esJsonInvalido = err.status === 400;
+    return res
+      .status(esJsonInvalido ? 400 : 500)
+      .json({ error: esJsonInvalido ? 'JSON inválido en el body' : 'Error interno del servidor' });
+  }
   res.status(500).render('layouts/main', { page: '500', titulo: 'ZEUS - Error del servidor' });
 });
 

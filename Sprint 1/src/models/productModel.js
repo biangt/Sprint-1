@@ -25,6 +25,12 @@ function getById(id) {
   return db.prepare(`SELECT ${CAMPOS} FROM products WHERE id = ?`).get(Number(id));
 }
 
+// Sprint 5 US#4: cantidad total de productos. COUNT(*) lo calcula SQLite
+// sin traer las filas a JS (más barato que getAll().length).
+function count() {
+  return db.prepare('SELECT COUNT(*) AS total FROM products').get().total;
+}
+
 // US#18: todo el catálogo, ordenado por precio en la propia base (más
 // eficiente que traer todo y ordenar en JS). "sort" ya viene validado por
 // productsService (solo puede ser 'asc', 'desc' o null) antes de llegar
@@ -99,9 +105,41 @@ function getByCategoria(categoriaId) {
   return db.prepare(`SELECT ${CAMPOS} FROM products WHERE categoria_id = ?`).all(categoriaId);
 }
 
+// Sprint 5 US#2: escritura. Los datos llegan ya validados por
+// productsService; acá solo se traducen los nombres del JSON (camelCase) a
+// las columnas de la tabla (snake_case). "?? null" porque better-sqlite3 no
+// acepta undefined como parámetro.
+function create({ nombre, descripcion, precioEnPuntos, stock, categoriaId, imagen, destacado }) {
+  const info = db
+    .prepare(
+      `INSERT INTO products (nombre, descripcion, precio_puntos, stock, categoria_id, imagen, destacado)
+       VALUES (?, ?, ?, ?, ?, ?, ?)`
+    )
+    .run(nombre, descripcion ?? null, precioEnPuntos, stock, categoriaId ?? null, imagen ?? null, destacado);
+  return getById(info.lastInsertRowid);
+}
+
+function update(id, { nombre, descripcion, precioEnPuntos, stock, categoriaId, imagen, destacado }) {
+  db.prepare(
+    `UPDATE products
+     SET nombre = ?, descripcion = ?, precio_puntos = ?, stock = ?, categoria_id = ?, imagen = ?, destacado = ?
+     WHERE id = ?`
+  ).run(nombre, descripcion ?? null, precioEnPuntos, stock, categoriaId ?? null, imagen ?? null, destacado, Number(id));
+  return getById(id);
+}
+
+// Devuelve true si borró una fila, false si el id no existía.
+function remove(id) {
+  return db.prepare('DELETE FROM products WHERE id = ?').run(Number(id)).changes > 0;
+}
+
 module.exports = {
   getAll,
   getById,
+  count,
+  create,
+  update,
+  remove,
   getAllOrdenado,
   buscarPorNombre,
   getSugeridos,

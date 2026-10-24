@@ -64,4 +64,106 @@ function searchProducts(query) {
   return { productos, term };
 }
 
-module.exports = { getHomeProducts, getProductDetail, getCategoryProducts, getProductsList, searchProducts };
+// ---------------------------------------------------------------------------
+// Sprint 5 US#2: operaciones que usa la API REST (lectura y escritura).
+// ---------------------------------------------------------------------------
+
+function getAllProducts() {
+  return productModel.getAll();
+}
+
+function getProductById(id) {
+  return productModel.getById(id);
+}
+
+// Valida y normaliza los datos de un producto (reglas de negocio).
+// Devuelve { errores } si algo está mal, o { datos } listos para guardar.
+function validarProducto(entrada) {
+  const errores = [];
+
+  const nombre = typeof entrada.nombre === 'string' ? entrada.nombre.trim() : '';
+  if (nombre === '') errores.push('nombre es obligatorio y debe ser texto');
+
+  const precio = entrada.precioEnPuntos;
+  if (typeof precio !== 'number' || !Number.isFinite(precio) || precio < 0) {
+    errores.push('precioEnPuntos es obligatorio y debe ser un número mayor o igual a 0');
+  }
+
+  const stock = entrada.stock ?? 0;
+  if (!Number.isInteger(stock) || stock < 0) {
+    errores.push('stock debe ser un entero mayor o igual a 0');
+  }
+
+  const categoriaId = entrada.categoriaId ?? null;
+  if (categoriaId !== null && (!Number.isInteger(categoriaId) || !categoryModel.getById(categoriaId))) {
+    errores.push('categoriaId debe ser el id de una categoría existente');
+  }
+
+  // destacado se guarda como 0/1 en SQLite; se acepta true/false o 0/1.
+  const destacadoRaw = entrada.destacado ?? 0;
+  if (![true, false, 0, 1].includes(destacadoRaw)) {
+    errores.push('destacado debe ser true/false (o 1/0)');
+  }
+
+  for (const campo of ['descripcion', 'imagen']) {
+    const valor = entrada[campo];
+    if (valor !== undefined && valor !== null && typeof valor !== 'string') {
+      errores.push(`${campo} debe ser texto`);
+    }
+  }
+
+  if (errores.length > 0) return { errores };
+
+  return {
+    datos: {
+      nombre,
+      descripcion: entrada.descripcion ?? null,
+      precioEnPuntos: precio,
+      stock,
+      categoriaId,
+      imagen: entrada.imagen ?? null,
+      destacado: destacadoRaw ? 1 : 0,
+    },
+  };
+}
+
+// El body puede llegar vacío (undefined) o con algo que no es un objeto.
+function comoObjeto(body) {
+  return body && typeof body === 'object' && !Array.isArray(body) ? body : {};
+}
+
+// Devuelve { errores } o { producto } (el producto ya creado, con su id).
+function createProduct(body) {
+  const { errores, datos } = validarProducto(comoObjeto(body));
+  if (errores) return { errores };
+  return { producto: productModel.create(datos) };
+}
+
+// Devuelve null si el id no existe; si no, { errores } o { producto }.
+// Los campos que no vengan en el body conservan su valor actual.
+function updateProduct(id, body) {
+  const actual = productModel.getById(id);
+  if (!actual) return null;
+
+  const { errores, datos } = validarProducto({ ...actual, ...comoObjeto(body) });
+  if (errores) return { errores };
+  return { producto: productModel.update(id, datos) };
+}
+
+// Devuelve true si se eliminó, false si el id no existía.
+function deleteProduct(id) {
+  return productModel.remove(id);
+}
+
+module.exports = {
+  getHomeProducts,
+  getProductDetail,
+  getCategoryProducts,
+  getProductsList,
+  searchProducts,
+  getAllProducts,
+  getProductById,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+};
